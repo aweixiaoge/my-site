@@ -52,6 +52,17 @@ describe("NavMenu", () => {
     expect(screen.getByRole("link", { name: "Home" })).not.toHaveAttribute("aria-current");
   });
 
+  it("should_render_every_link_with_the_same_style_regardless_of_route", () => {
+    mockPathname = "/";
+
+    render(<NavMenu items={items} />);
+
+    const links = within(screen.getByRole("navigation")).getAllByRole("link");
+    const distinctClassNames = new Set(links.map((link) => link.className));
+
+    expect(distinctClassNames.size).toBe(1);
+  });
+
   it("should_expand_the_menu_when_the_toggle_is_clicked", () => {
     render(<NavMenu items={items} />);
 

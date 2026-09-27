@@ -6,3 +6,10 @@ export type NavItem = {
 export type Navigation = {
   items?: NavItem[] | null;
 } | null;
+
+export type Hero = {
+  title: string;
+  description?: string | null;
+  path: string;
+  imageUrl?: string | null;
+} | null;

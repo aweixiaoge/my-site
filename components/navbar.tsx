@@ -1,19 +1,27 @@
 import Link from "next/link";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import { NavMenu } from "@/components/nav-menu";
-import { getNavigationItems } from "@/sanity/navigation";
+import { LANGUAGES } from "@/lib/languages";
+import { NAV_ITEMS } from "@/lib/navigation";
 
-const SITE_NAME = "My Site";
+const SITE_NAME = "Meridian";
 
-export async function Navbar() {
-  const items = await getNavigationItems();
-
+export function Navbar() {
   return (
-    <header className="sticky top-0 z-50 border-b border-black/10 bg-background/80 backdrop-blur dark:border-white/15">
-      <div className="mx-auto flex h-16 w-full max-w-5xl items-center justify-between gap-4 px-4">
-        <Link href="/" className="text-lg font-semibold tracking-tight">
-          {SITE_NAME}
-        </Link>
-        {items.length > 0 ? <NavMenu items={items} /> : null}
+    <header className="sticky top-0 z-50 h-20 border-b border-neutral-200 bg-white">
+      <div className="flex h-full items-center gap-2 px-4 md:px-20">
+        <div className="flex flex-1 items-center">
+          <Link
+            href="/"
+            className="text-lg leading-[1.4] font-semibold tracking-[-0.01em] text-neutral-950"
+          >
+            {SITE_NAME}
+          </Link>
+        </div>
+        <NavMenu items={NAV_ITEMS} />
+        <div className="flex h-full flex-1 items-center justify-end">
+          <LanguageSwitcher languages={LANGUAGES} />
+        </div>
       </div>
     </header>
   );

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import type { NavItem } from "@/sanity/types";
+import type { NavItem } from "@/lib/navigation";
 
 function isActiveRoute(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
@@ -20,7 +20,7 @@ export function NavMenu({ items }: { items: NavItem[] }) {
         aria-expanded={open}
         aria-controls="site-nav"
         aria-label="Toggle menu"
-        className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-black/10 md:hidden dark:border-white/15"
+        className="order-last inline-flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-200 text-neutral-600 md:hidden"
         onClick={() => setOpen((value) => !value)}
       >
         <svg
@@ -49,9 +49,9 @@ export function NavMenu({ items }: { items: NavItem[] }) {
       <nav
         id="site-nav"
         aria-label="Main"
-        className={`${open ? "block" : "hidden"} absolute inset-x-0 top-16 border-b border-black/10 bg-background md:static md:block md:border-0 dark:border-white/15`}
+        className={`${open ? "block" : "hidden"} absolute inset-x-0 top-20 border-b border-neutral-200 bg-white md:static md:block md:border-0`}
       >
-        <ul className="mx-auto flex w-full max-w-5xl flex-col gap-1 px-4 py-3 md:flex-row md:items-center md:justify-end md:gap-6 md:py-0">
+        <ul className="flex w-full flex-col gap-1 px-4 py-3 md:w-auto md:flex-row md:items-center md:gap-8 md:px-0 md:py-0">
           {items.map((item) => {
             const active = isActiveRoute(pathname, item.href);
 
@@ -61,9 +61,7 @@ export function NavMenu({ items }: { items: NavItem[] }) {
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   onClick={() => setOpen(false)}
-                  className={`block py-2 text-sm font-medium md:py-0 ${
-                    active ? "text-foreground" : "text-foreground/60 hover:text-foreground"
-                  }`}
+                  className="block py-2 text-sm leading-[1.5] text-neutral-600 hover:text-neutral-950 md:py-0"
                 >
                   {item.label}
                 </Link>
