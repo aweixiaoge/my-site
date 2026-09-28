@@ -71,3 +71,13 @@ export const ABOUT_US_QUERY = `*[_type == "aboutUs"][0]{
   storyDescription,
   "images": imageList[].asset->url
 }`;
+
+export const CONTACT_INFO_QUERY = `*[_type == "contactInfo"][0]{
+  email,
+  phone,
+  whatsapp,
+  address,
+  youtube,
+  facebook,
+  instagram
+}`;

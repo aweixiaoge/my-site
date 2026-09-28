@@ -63,3 +63,22 @@ export type AboutUs = {
   storyDescription: string;
   images: string[];
 } | null;
+
+export type ContactInfo = {
+  email?: string | null;
+  phone?: string | null;
+  whatsapp?: string | null;
+  address?: string | null;
+  youtube?: string | null;
+  facebook?: string | null;
+  instagram?: string | null;
+} | null;
+
+export type InquiryInput = {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+};
+
+export type InquiryResult = { ok: true } | { ok: false; error: string };
