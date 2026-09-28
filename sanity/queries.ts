@@ -14,3 +14,16 @@ export const HERO_QUERY = `*[_type == "hero"][0]{
   path,
   "imageUrl": imageUrl.asset->url
 }`;
+
+export const HOT_PRODUCTS_QUERY = `*[_type == "productList"][0...6]{
+  _id,
+  title,
+  path,
+  "imageUrl": imageList[0].asset->url
+}`;
+
+export const CONTENT_MEDIA_QUERY = `*[_type == "contentMedia"][0]{
+  title,
+  description,
+  "videoUrl": video.asset->url
+}`;

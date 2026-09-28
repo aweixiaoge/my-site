@@ -13,3 +13,16 @@ export type Hero = {
   path: string;
   imageUrl?: string | null;
 } | null;
+
+export type HotProduct = {
+  _id: string;
+  title: string;
+  path: string;
+  imageUrl?: string | null;
+};
+
+export type ContentMedia = {
+  title: string;
+  description?: string | null;
+  videoUrl?: string | null;
+} | null;
