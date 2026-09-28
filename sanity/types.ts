@@ -29,6 +29,15 @@ export type Product = {
   categoryId?: string | null;
 };
 
+export type ProductDetail = {
+  _id: string;
+  title: string;
+  description?: string | null;
+  path: string;
+  images: string[];
+  category?: { _id: string; title: string } | null;
+};
+
 export type ProductCategory = {
   _id: string;
   title: string;

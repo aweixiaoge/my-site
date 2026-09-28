@@ -40,3 +40,19 @@ export const PRODUCT_CATEGORIES_QUERY = `*[_type == "category"] | order(title as
   _id,
   title
 }`;
+
+export const PRODUCT_BY_PATH_QUERY = `*[_type == "productList" && path == $path][0]{
+  _id,
+  title,
+  description,
+  path,
+  "images": imageList[].asset->url,
+  "category": category->{_id, title}
+}`;
+
+export const RELATED_PRODUCTS_QUERY = `*[_type == "productList" && category._ref == $categoryId && _id != $excludeId] | order(title asc)[0...3]{
+  _id,
+  title,
+  path,
+  "imageUrl": imageList[0].asset->url
+}`;
