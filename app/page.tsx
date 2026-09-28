@@ -1,4 +1,5 @@
 import { ContentMediaSection } from "@/components/content-media-section";
+import { ContentStatsSection } from "@/components/content-stats-section";
 import { HeroSection } from "@/components/hero-section";
 import { HotProductsSection } from "@/components/hot-products-section";
 
@@ -8,6 +9,7 @@ export default function IndexPage() {
       <HeroSection />
       <HotProductsSection />
       <ContentMediaSection />
+      <ContentStatsSection />
     </main>
   );
 }
