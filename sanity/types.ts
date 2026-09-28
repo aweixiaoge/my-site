@@ -48,3 +48,13 @@ export type ContentMedia = {
   description?: string | null;
   videoUrl?: string | null;
 } | null;
+
+export type BlogPost = {
+  _id: string;
+  title: string;
+  description?: string | null;
+  author?: string | null;
+  createdTime?: string | null;
+  label?: string | null;
+  imageUrl?: string | null;
+};

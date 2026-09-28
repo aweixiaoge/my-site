@@ -56,3 +56,13 @@ export const RELATED_PRODUCTS_QUERY = `*[_type == "productList" && category._ref
   path,
   "imageUrl": imageList[0].asset->url
 }`;
+
+export const BLOG_POSTS_QUERY = `*[_type == "blogList"] | order(createdTime desc){
+  _id,
+  title,
+  description,
+  author,
+  createdTime,
+  "label": label->title,
+  "imageUrl": imageList[0].asset->url
+}`;
