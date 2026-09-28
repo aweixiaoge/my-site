@@ -57,6 +57,16 @@ export const RELATED_PRODUCTS_QUERY = `*[_type == "productList" && category._ref
   "imageUrl": imageList[0].asset->url
 }`;
 
+export const BLOG_POSTS_QUERY = `*[_type == "blogList"] | order(createdTime desc){
+  _id,
+  title,
+  description,
+  author,
+  createdTime,
+  "label": label->title,
+  "imageUrl": imageList[0].asset->url
+}`;
+
 export const ABOUT_US_QUERY = `*[_type == "aboutUs"][0]{
   storyDescription,
   "images": imageList[].asset->url
