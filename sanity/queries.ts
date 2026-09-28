@@ -56,3 +56,8 @@ export const RELATED_PRODUCTS_QUERY = `*[_type == "productList" && category._ref
   path,
   "imageUrl": imageList[0].asset->url
 }`;
+
+export const ABOUT_US_QUERY = `*[_type == "aboutUs"][0]{
+  storyDescription,
+  "images": imageList[].asset->url
+}`;

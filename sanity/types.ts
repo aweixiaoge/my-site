@@ -48,3 +48,8 @@ export type ContentMedia = {
   description?: string | null;
   videoUrl?: string | null;
 } | null;
+
+export type AboutUs = {
+  storyDescription: string;
+  images: string[];
+} | null;
