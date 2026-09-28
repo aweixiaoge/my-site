@@ -1,3 +1,5 @@
+import type { PortableTextBlock } from "@portabletext/react";
+
 export type NavItem = {
   label: string;
   href: string;
@@ -57,6 +59,17 @@ export type BlogPost = {
   createdTime?: string | null;
   label?: string | null;
   imageUrl?: string | null;
+};
+
+export type BlogPostDetail = {
+  _id: string;
+  title: string;
+  description?: string | null;
+  author?: string | null;
+  createdTime?: string | null;
+  label?: string | null;
+  images: string[];
+  body?: PortableTextBlock[] | null;
 };
 
 export type AboutUs = {

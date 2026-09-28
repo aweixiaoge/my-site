@@ -67,6 +67,17 @@ export const BLOG_POSTS_QUERY = `*[_type == "blogList"] | order(createdTime desc
   "imageUrl": imageList[0].asset->url
 }`;
 
+export const BLOG_POST_BY_ID_QUERY = `*[_type == "blogList" && _id == $id][0]{
+  _id,
+  title,
+  description,
+  author,
+  createdTime,
+  "label": label->title,
+  "images": imageList[].asset->url,
+  body
+}`;
+
 export const ABOUT_US_QUERY = `*[_type == "aboutUs"][0]{
   storyDescription,
   "images": imageList[].asset->url
