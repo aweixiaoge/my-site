@@ -6,16 +6,20 @@ import { useState } from "react";
 export function ProductGallery({
   images,
   title,
+  mainImageAspectClassName = "aspect-square",
 }: {
   images: string[];
   title: string;
+  mainImageAspectClassName?: string;
 }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const mainImage = images[selectedIndex];
 
   return (
     <div className="flex w-full flex-col gap-4">
-      <div className="relative aspect-square w-full overflow-hidden rounded-xl border border-neutral-200">
+      <div
+        className={`relative w-full overflow-hidden rounded-xl border border-neutral-200 ${mainImageAspectClassName}`}
+      >
         {mainImage ? (
           <Image
             src={mainImage}

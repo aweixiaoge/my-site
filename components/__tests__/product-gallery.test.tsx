@@ -54,4 +54,26 @@ describe("ProductGallery", () => {
 
     expect(screen.queryByRole("img")).not.toBeInTheDocument();
   });
+
+  it("should_default_the_main_image_frame_to_a_square", () => {
+    render(<ProductGallery images={images} title="Forecasting" />);
+
+    expect(
+      screen.getByRole("img", { name: "Forecasting" }).parentElement,
+    ).toHaveClass("aspect-square");
+  });
+
+  it("should_use_a_custom_aspect_for_the_main_image_frame_when_given_one", () => {
+    render(
+      <ProductGallery
+        images={images}
+        title="Forecasting"
+        mainImageAspectClassName="aspect-[1100/644]"
+      />,
+    );
+
+    expect(
+      screen.getByRole("img", { name: "Forecasting" }).parentElement,
+    ).toHaveClass("aspect-[1100/644]");
+  });
 });

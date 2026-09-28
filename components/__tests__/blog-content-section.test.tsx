@@ -136,4 +136,43 @@ describe("BlogContentSection", () => {
 
     expect(screen.getAllByRole("article")).toHaveLength(2);
   });
+
+  it("should_link_each_post_to_the_detail_page_of_its_title_slug", async () => {
+    mockGetBlogPosts.mockResolvedValueOnce(posts);
+
+    render(await BlogContentSection({ page: 1 }));
+
+    expect(screen.getByRole("link", { name: /Post 100/ })).toHaveAttribute(
+      "href",
+      "/blog/post-100",
+    );
+    expect(screen.getByRole("link", { name: /Post 1 / })).toHaveAttribute(
+      "href",
+      "/blog/post-1",
+    );
+  });
+
+  it("should_keep_posts_with_colliding_titles_reachable_under_distinct_slugs", async () => {
+    const colliding: BlogPost[] = [
+      {
+        ...makePost(1),
+        _id: "4cb64872-4d33-487c-8c74-f7b8f0bf1f2f",
+        title: "Same Title",
+      },
+      {
+        ...makePost(2),
+        _id: "5a91e251-3a25-4681-a361-858302a9f932",
+        title: "Same Title",
+      },
+    ];
+    mockGetBlogPosts.mockResolvedValueOnce(colliding);
+
+    render(await BlogContentSection({ page: 1 }));
+
+    expect(
+      screen
+        .getAllByRole("link", { name: /Same Title/ })
+        .map((link) => link.getAttribute("href")),
+    ).toEqual(["/blog/same-title", "/blog/same-title-5a91e251"]);
+  });
 });

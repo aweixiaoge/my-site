@@ -32,7 +32,7 @@ export function splitBlogPosts(posts: BlogPost[]): {
   return { featured, rest };
 }
 
-function formatPostDate(createdTime?: string | null): string {
+export function formatPostDate(createdTime?: string | null): string {
   const match = createdTime?.match(/^(\d{4})-(\d{2})-(\d{2})$/);
   if (!match) {
     return "";
@@ -68,4 +68,46 @@ export function formatPostMeta({
 
 export function blogListingHref(page: number): string {
   return page > 1 ? `/blog?page=${page}` : "/blog";
+}
+
+export function blogDetailHref(slug: string): string {
+  return `/blog/${slug}`;
+}
+
+const ID_TAIL_LENGTH = 8;
+
+export function slugifyBlogTitle(title: string): string {
+  return title
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+export function indexBlogSlugs(posts: BlogPost[]): {
+  slugsByPostId: Map<string, string>;
+  postsBySlug: Map<string, BlogPost>;
+} {
+  const slugsByPostId = new Map<string, string>();
+  const postsBySlug = new Map<string, BlogPost>();
+
+  // _id order keeps slug assignment stable no matter how the query ordered the posts.
+  const ordered = [...posts].sort((a, b) =>
+    a._id < b._id ? -1 : a._id > b._id ? 1 : 0,
+  );
+
+  for (const post of ordered) {
+    const idTail = post._id.slice(0, ID_TAIL_LENGTH);
+    const base = slugifyBlogTitle(post.title) || `post-${idTail}`;
+
+    let slug = base;
+    for (let attempt = 1; postsBySlug.has(slug); attempt += 1) {
+      slug = `${base}-${attempt === 1 ? idTail : `${idTail}-${attempt}`}`;
+    }
+
+    slugsByPostId.set(post._id, slug);
+    postsBySlug.set(slug, post);
+  }
+
+  return { slugsByPostId, postsBySlug };
 }
