@@ -21,6 +21,19 @@ export type HotProduct = {
   imageUrl?: string | null;
 };
 
+export type Product = {
+  _id: string;
+  title: string;
+  path: string;
+  imageUrl?: string | null;
+  categoryId?: string | null;
+};
+
+export type ProductCategory = {
+  _id: string;
+  title: string;
+};
+
 export type ContentMedia = {
   title: string;
   description?: string | null;

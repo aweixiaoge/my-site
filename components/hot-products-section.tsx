@@ -1,5 +1,4 @@
-import Image from "next/image";
-import Link from "next/link";
+import { ProductCard } from "@/components/product-card";
 import { getHotProducts } from "@/sanity/hot-products";
 
 export async function HotProductsSection() {
@@ -22,26 +21,12 @@ export async function HotProductsSection() {
         </div>
         <div className="grid w-full grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((product) => (
-            <Link
+            <ProductCard
               key={product._id}
-              href={product.path}
-              className="flex flex-col gap-4 rounded-xl border border-neutral-200 bg-white p-6"
-            >
-              <div className="relative h-[200px] w-full overflow-hidden rounded-xl border border-neutral-200">
-                {product.imageUrl ? (
-                  <Image
-                    src={product.imageUrl}
-                    alt={product.title}
-                    fill
-                    unoptimized
-                    className="object-cover"
-                  />
-                ) : null}
-              </div>
-              <h3 className="text-lg leading-[1.4] font-semibold tracking-[-0.01em] text-neutral-950">
-                {product.title}
-              </h3>
-            </Link>
+              title={product.title}
+              path={product.path}
+              imageUrl={product.imageUrl}
+            />
           ))}
         </div>
       </div>

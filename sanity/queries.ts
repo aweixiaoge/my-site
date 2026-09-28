@@ -27,3 +27,16 @@ export const CONTENT_MEDIA_QUERY = `*[_type == "contentMedia"][0]{
   description,
   "videoUrl": video.asset->url
 }`;
+
+export const PRODUCTS_QUERY = `*[_type == "productList"] | order(title asc){
+  _id,
+  title,
+  path,
+  "imageUrl": imageList[0].asset->url,
+  "categoryId": category._ref
+}`;
+
+export const PRODUCT_CATEGORIES_QUERY = `*[_type == "category"] | order(title asc){
+  _id,
+  title
+}`;
