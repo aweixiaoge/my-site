@@ -104,8 +104,7 @@ export function AboutMissionSection() {
           Our Mission
         </h2>
         <p className="text-xs leading-[1.2] tracking-[-0.02em] text-neutral-950">
-          Make enterprise software feel as simple as the tools people choose for
-          themselves.
+          to make cutting-edge technology accessible, reliable, and enjoyable for everyday users. With a team of more than 500 engineers, designers, and support professionals, we invest heavily in research and development to stay at the forefront of industry trends.
         </p>
         <p className="text-xs leading-[1.25] text-neutral-600">
           We remove the friction between a good idea and a shipped product, for
