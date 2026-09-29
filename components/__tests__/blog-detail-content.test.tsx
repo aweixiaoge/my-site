@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { BlogDetailContent } from "@/components/blog-detail-content";
+import { en } from "@/lib/i18n/dictionaries/en";
 import type { BlogPostDetail } from "@/sanity/types";
 
 function paragraph(key: string, text: string) {
@@ -31,7 +32,7 @@ const post: BlogPostDetail = {
 
 describe("BlogDetailContent", () => {
   it("should_render_the_post_title_as_the_page_heading", () => {
-    render(<BlogDetailContent post={post} />);
+    render(<BlogDetailContent post={post} locale="en" dict={en} />);
 
     expect(
       screen.getByRole("heading", {
@@ -42,20 +43,20 @@ describe("BlogDetailContent", () => {
   });
 
   it("should_link_the_breadcrumb_back_to_the_blog_listing", () => {
-    render(<BlogDetailContent post={post} />);
+    render(<BlogDetailContent post={post} locale="en" dict={en} />);
 
     expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute(
       "href",
-      "/",
+      "/en",
     );
     expect(screen.getByRole("link", { name: "Blog" })).toHaveAttribute(
       "href",
-      "/blog",
+      "/en/blog",
     );
   });
 
   it("should_mark_the_post_title_as_the_current_breadcrumb_step", () => {
-    render(<BlogDetailContent post={post} />);
+    render(<BlogDetailContent post={post} locale="en" dict={en} />);
 
     const current = screen
       .getByRole("navigation", { name: "Breadcrumb" })
@@ -65,20 +66,20 @@ describe("BlogDetailContent", () => {
   });
 
   it("should_render_the_label_badge", () => {
-    render(<BlogDetailContent post={post} />);
+    render(<BlogDetailContent post={post} locale="en" dict={en} />);
 
     expect(screen.getByText("Engineering")).toBeInTheDocument();
   });
 
   it("should_render_the_author_and_the_formatted_date_as_separate_parts", () => {
-    render(<BlogDetailContent post={post} />);
+    render(<BlogDetailContent post={post} locale="en" dict={en} />);
 
     expect(screen.getByText("Elena Marsh")).toBeInTheDocument();
     expect(screen.getByText("March 12, 2026")).toBeInTheDocument();
   });
 
   it("should_render_the_post_images_in_the_gallery", () => {
-    render(<BlogDetailContent post={post} />);
+    render(<BlogDetailContent post={post} locale="en" dict={en} />);
 
     expect(
       screen.getByRole("button", { name: "Show image 2" }),
@@ -86,7 +87,7 @@ describe("BlogDetailContent", () => {
   });
 
   it("should_render_every_body_block_as_a_paragraph", () => {
-    render(<BlogDetailContent post={post} />);
+    render(<BlogDetailContent post={post} locale="en" dict={en} />);
 
     const first = screen.getByText("For four years, reporting ran on a queue.");
     const second = screen.getByText("Nothing was on fire.");
@@ -105,6 +106,8 @@ describe("BlogDetailContent", () => {
           images: [],
           body: null,
         }}
+        locale="en"
+        dict={en}
       />,
     );
 
@@ -117,7 +120,7 @@ describe("BlogDetailContent", () => {
 
   it("should_render_only_the_author_when_the_date_is_missing", () => {
     render(
-      <BlogDetailContent post={{ ...post, createdTime: null }} />,
+      <BlogDetailContent post={{ ...post, createdTime: null }} locale="en" dict={en} />,
     );
 
     expect(screen.getByText("Elena Marsh")).toBeInTheDocument();
@@ -125,7 +128,7 @@ describe("BlogDetailContent", () => {
   });
 
   it("should_render_only_the_date_when_the_author_is_missing", () => {
-    render(<BlogDetailContent post={{ ...post, author: null }} />);
+    render(<BlogDetailContent post={{ ...post, author: null }} locale="en" dict={en} />);
 
     expect(screen.getByText("March 12, 2026")).toBeInTheDocument();
     expect(screen.queryByText(/·/)).not.toBeInTheDocument();

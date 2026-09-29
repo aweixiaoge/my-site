@@ -1,18 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { Dropdown } from "@/components/dropdown";
-import { DEFAULT_LANGUAGE, type Language } from "@/lib/languages";
+import { LOCALES, type Locale } from "@/lib/i18n/locales";
+import { localeFromPath, localizedHref } from "@/lib/i18n/localized-href";
 
-export function LanguageSwitcher({ languages }: { languages: Language[] }) {
-  const [language, setLanguage] = useState(DEFAULT_LANGUAGE);
+export function LanguageSwitcher({ label }: { label: string }) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const current = localeFromPath(pathname);
 
   return (
     <Dropdown
-      label="Language"
-      options={languages}
-      value={language}
-      onChange={setLanguage}
+      label={label}
+      options={LOCALES}
+      value={current}
+      onChange={(value) => {
+        // Read the query string at click time rather than via useSearchParams,
+        // which would need a Suspense boundary on every statically rendered page.
+        const search = typeof window === "undefined" ? "" : window.location.search;
+
+        router.replace(localizedHref(value as Locale, `${pathname}${search}`));
+      }}
     />
   );
 }

@@ -9,7 +9,15 @@ function isActiveRoute(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function NavMenu({ items }: { items: NavItem[] }) {
+export function NavMenu({
+  items,
+  toggleLabel,
+  navLabel,
+}: {
+  items: NavItem[];
+  toggleLabel: string;
+  navLabel: string;
+}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -19,7 +27,7 @@ export function NavMenu({ items }: { items: NavItem[] }) {
         type="button"
         aria-expanded={open}
         aria-controls="site-nav"
-        aria-label="Toggle menu"
+        aria-label={toggleLabel}
         className="order-last inline-flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-200 text-neutral-600 md:hidden"
         onClick={() => setOpen((value) => !value)}
       >
@@ -48,7 +56,7 @@ export function NavMenu({ items }: { items: NavItem[] }) {
       </button>
       <nav
         id="site-nav"
-        aria-label="Main"
+        aria-label={navLabel}
         className={`${open ? "block" : "hidden"} absolute inset-x-0 top-20 border-b border-neutral-200 bg-white md:static md:block md:border-0`}
       >
         <ul className="flex w-full flex-col gap-1 px-4 py-3 md:w-auto md:flex-row md:items-center md:gap-8 md:px-0 md:py-0">

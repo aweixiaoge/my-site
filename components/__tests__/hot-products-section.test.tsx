@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { HotProductsSection } from "@/components/hot-products-section";
+import { en } from "@/lib/i18n/dictionaries/en";
 import { getHotProducts } from "@/sanity/hot-products";
 
 jest.mock("@/sanity/hot-products", () => ({
@@ -23,7 +24,7 @@ describe("HotProductsSection", () => {
   it("should_render_the_section_heading", async () => {
     mockGetHotProducts.mockResolvedValueOnce(products);
 
-    render(await HotProductsSection());
+    render(await HotProductsSection({ locale: "en", dict: en }));
 
     expect(
       screen.getByRole("heading", { level: 2, name: "Most popular products" }),
@@ -33,7 +34,7 @@ describe("HotProductsSection", () => {
   it("should_render_the_section_description", async () => {
     mockGetHotProducts.mockResolvedValueOnce(products);
 
-    render(await HotProductsSection());
+    render(await HotProductsSection({ locale: "en", dict: en }));
 
     expect(
       screen.getByText(
@@ -45,7 +46,7 @@ describe("HotProductsSection", () => {
   it("should_render_the_six_products_from_sanity", async () => {
     mockGetHotProducts.mockResolvedValueOnce(products);
 
-    render(await HotProductsSection());
+    render(await HotProductsSection({ locale: "en", dict: en }));
 
     for (const product of products) {
       expect(screen.getByText(product.title)).toBeInTheDocument();
@@ -55,22 +56,22 @@ describe("HotProductsSection", () => {
   it("should_link_each_card_to_its_path", async () => {
     mockGetHotProducts.mockResolvedValueOnce(products);
 
-    render(await HotProductsSection());
+    render(await HotProductsSection({ locale: "en", dict: en }));
 
     expect(screen.getByRole("link", { name: /Product 1/ })).toHaveAttribute(
       "href",
-      "/products/product-1",
+      "/en/products/product-1",
     );
     expect(screen.getByRole("link", { name: /Product 6/ })).toHaveAttribute(
       "href",
-      "/products/product-6",
+      "/en/products/product-6",
     );
   });
 
   it("should_make_every_card_a_link", async () => {
     mockGetHotProducts.mockResolvedValueOnce(products);
 
-    render(await HotProductsSection());
+    render(await HotProductsSection({ locale: "en", dict: en }));
 
     expect(screen.getAllByRole("link")).toHaveLength(6);
   });
@@ -78,7 +79,7 @@ describe("HotProductsSection", () => {
   it("should_render_each_product_image_from_the_first_image_list_entry", async () => {
     mockGetHotProducts.mockResolvedValueOnce(products);
 
-    render(await HotProductsSection());
+    render(await HotProductsSection({ locale: "en", dict: en }));
 
     expect(screen.getByRole("img", { name: "Product 1" })).toHaveAttribute(
       "src",
@@ -100,7 +101,7 @@ describe("HotProductsSection", () => {
       },
     ]);
 
-    render(await HotProductsSection());
+    render(await HotProductsSection({ locale: "en", dict: en }));
 
     expect(screen.getByText("No image")).toBeInTheDocument();
     expect(screen.queryByRole("img")).not.toBeInTheDocument();
@@ -109,7 +110,7 @@ describe("HotProductsSection", () => {
   it("should_render_nothing_when_no_products_exist", async () => {
     mockGetHotProducts.mockResolvedValueOnce([]);
 
-    const { container } = render(await HotProductsSection());
+    const { container } = render(await HotProductsSection({ locale: "en", dict: en }));
 
     expect(container).toBeEmptyDOMElement();
   });

@@ -1,6 +1,7 @@
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { getContentMedia } from "@/sanity/content-media";
 
-export async function ContentMediaSection() {
+export async function ContentMediaSection({ dict }: { dict: Dictionary }) {
   const media = await getContentMedia();
 
   if (!media) {
@@ -12,11 +13,10 @@ export async function ContentMediaSection() {
       <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center gap-12">
         <div className="flex flex-col items-center gap-4">
           <h2 className="text-2xl leading-[1.3] font-semibold tracking-[-0.01em] text-neutral-950">
-            See the whole business in one place
+            {dict.home.mediaTitle}
           </h2>
           <p className="text-base leading-[1.6] text-neutral-600">
-            Connect your systems once, and every team works from the same live
-            view.
+            {dict.home.mediaDescription}
           </p>
         </div>
         <div className="flex w-full flex-col items-center gap-8 lg:flex-row lg:gap-16">

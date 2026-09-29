@@ -5,8 +5,18 @@ export type InquiryValues = {
   message: string;
 };
 
+/**
+ * Validation returns codes rather than sentences so the logic stays free of
+ * language; the form maps each code to the active dictionary.
+ */
+export type InquiryFieldError =
+  | "name-required"
+  | "email-required"
+  | "email-invalid"
+  | "message-required";
+
 export type InquiryErrors = Partial<
-  Record<"name" | "email" | "message", string>
+  Record<"name" | "email" | "message", InquiryFieldError>
 >;
 
 export const EMPTY_INQUIRY: InquiryValues = {
@@ -23,17 +33,17 @@ export function validateInquiry(values: InquiryValues): InquiryErrors {
   const email = values.email.trim();
 
   if (!values.name.trim()) {
-    errors.name = "Please enter your name.";
+    errors.name = "name-required";
   }
 
   if (!email) {
-    errors.email = "Please enter your email.";
+    errors.email = "email-required";
   } else if (!EMAIL_PATTERN.test(email)) {
-    errors.email = "Please enter a valid email address.";
+    errors.email = "email-invalid";
   }
 
   if (!values.message.trim()) {
-    errors.message = "Please enter a message.";
+    errors.message = "message-required";
   }
 
   return errors;

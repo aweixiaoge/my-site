@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { ContentStatsSection } from "@/components/content-stats-section";
+import { en } from "@/lib/i18n/dictionaries/en";
 
 const STATS = [
   { value: "99.99%", label: "Uptime across all regions" },
@@ -9,7 +10,7 @@ const STATS = [
 
 describe("ContentStatsSection", () => {
   it("should_render_the_section_heading", () => {
-    render(<ContentStatsSection />);
+    render(<ContentStatsSection dict={en} />);
 
     expect(
       screen.getByRole("heading", {
@@ -20,7 +21,7 @@ describe("ContentStatsSection", () => {
   });
 
   it("should_render_the_section_description", () => {
-    render(<ContentStatsSection />);
+    render(<ContentStatsSection dict={en} />);
 
     expect(
       screen.getByText("The numbers our customers hold us to."),
@@ -28,7 +29,7 @@ describe("ContentStatsSection", () => {
   });
 
   it("should_render_each_stat_value", () => {
-    render(<ContentStatsSection />);
+    render(<ContentStatsSection dict={en} />);
 
     for (const { value } of STATS) {
       expect(screen.getByText(value)).toBeInTheDocument();
@@ -36,7 +37,7 @@ describe("ContentStatsSection", () => {
   });
 
   it("should_render_each_stat_label", () => {
-    render(<ContentStatsSection />);
+    render(<ContentStatsSection dict={en} />);
 
     for (const { label } of STATS) {
       expect(screen.getByText(label)).toBeInTheDocument();

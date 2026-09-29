@@ -16,7 +16,7 @@ const href = "/blog/this-is-my-first-blog";
 
 describe("FeaturedPost", () => {
   it("should_render_the_title_as_a_heading", () => {
-    render(<FeaturedPost post={post} href={href} />);
+    render(<FeaturedPost post={post} href={href} locale="en" />);
 
     expect(
       screen.getByRole("heading", { name: "This is my first blog" }),
@@ -24,7 +24,7 @@ describe("FeaturedPost", () => {
   });
 
   it("should_render_the_excerpt_and_the_formatted_meta_line", () => {
-    render(<FeaturedPost post={post} href={href} />);
+    render(<FeaturedPost post={post} href={href} locale="en" />);
 
     expect(
       screen.getByText("This is my first blog description"),
@@ -33,13 +33,13 @@ describe("FeaturedPost", () => {
   });
 
   it("should_render_the_label_badge", () => {
-    render(<FeaturedPost post={post} href={href} />);
+    render(<FeaturedPost post={post} href={href} locale="en" />);
 
     expect(screen.getByText("Featured")).toBeInTheDocument();
   });
 
   it("should_render_the_image_with_the_title_as_alt_text", () => {
-    render(<FeaturedPost post={post} href={href} />);
+    render(<FeaturedPost post={post} href={href} locale="en" />);
 
     expect(
       screen.getByRole("img", { name: "This is my first blog" }),
@@ -47,7 +47,7 @@ describe("FeaturedPost", () => {
   });
 
   it("should_link_the_featured_post_to_its_detail_page", () => {
-    render(<FeaturedPost post={post} href={href} />);
+    render(<FeaturedPost post={post} href={href} locale="en" />);
 
     expect(
       screen.getByRole("link", { name: /This is my first blog/ }),
@@ -59,6 +59,7 @@ describe("FeaturedPost", () => {
       <FeaturedPost
         post={{ _id: "blog-2", title: "Bare post", label: null }}
         href="/blog/bare-post"
+        locale="en"
       />,
     );
 

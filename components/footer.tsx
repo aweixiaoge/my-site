@@ -1,52 +1,68 @@
 import Link from "next/link";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/locales";
+import { localizedHref } from "@/lib/i18n/localized-href";
 
-const SITE_NAME = "Meridian";
+export function Footer({
+  locale,
+  dict,
+}: {
+  locale: Locale;
+  dict: Dictionary;
+}) {
+  const columns = [
+    {
+      title: dict.footer.productColumn,
+      links: [
+        {
+          label: dict.footer.earbud,
+          href: localizedHref(locale, "/product/earbud"),
+        },
+        {
+          label: dict.footer.smartphone,
+          href: localizedHref(locale, "/product/smartphone"),
+        },
+        {
+          label: dict.footer.headphone,
+          href: localizedHref(locale, "/product/headphone"),
+        },
+      ],
+    },
+    {
+      title: dict.footer.companyColumn,
+      links: [
+        { label: dict.footer.about, href: localizedHref(locale, "/about") },
+        { label: dict.footer.blog, href: localizedHref(locale, "/blog") },
+        { label: dict.footer.home, href: localizedHref(locale, "/") },
+        { label: dict.footer.contact, href: localizedHref(locale, "/contact") },
+      ],
+    },
+    {
+      title: dict.footer.legalColumn,
+      links: [
+        { label: dict.footer.privacy, href: localizedHref(locale, "/privacy") },
+        { label: dict.footer.terms, href: localizedHref(locale, "/terms") },
+        { label: dict.footer.cookies, href: localizedHref(locale, "/cookies") },
+      ],
+    },
+  ];
 
-const COLUMNS = [
-  {
-    title: "Product",
-    links: [
-      { label: "Earbud", href: "/product/earbud" },
-      { label: "Smartphone", href: "/product/smartphone" },
-      { label: "Headphone", href: "/product/headphone" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { label: "About", href: "/about" },
-      { label: "Blog", href: "/blog" },
-      { label: "Home", href: "/" },
-      { label: "Contact", href: "/contact" },
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
-      { label: "Privacy", href: "/privacy" },
-      { label: "Terms", href: "/terms" },
-      { label: "Cookies", href: "/cookies" },
-    ],
-  },
-];
-
-export function Footer() {
   return (
     <footer className="bg-neutral-100 px-5 py-16 sm:px-10 lg:px-16">
       <div className="mx-auto flex w-full max-w-[1200px] flex-col items-center gap-12">
         <div className="flex w-full flex-col gap-8 lg:flex-row">
           <div className="flex flex-col gap-4 lg:w-[336px] lg:shrink-0">
             <Link
-              href="/"
+              href={localizedHref(locale, "/")}
               className="text-lg leading-[1.4] font-semibold tracking-[-0.01em] text-neutral-950"
             >
-              {SITE_NAME}
+              {dict.site.name}
             </Link>
             <p className="text-sm leading-[1.5] text-neutral-600">
-              The platform where modern B2B teams run their operations.
+              {dict.footer.tagline}
             </p>
           </div>
-          {COLUMNS.map((column) => (
+          {columns.map((column) => (
             <nav
               key={column.title}
               aria-label={column.title}
@@ -73,7 +89,7 @@ export function Footer() {
         <div className="flex w-full flex-col gap-4">
           <div className="h-px w-full bg-neutral-200" />
           <p className="text-xs leading-[1.4] font-medium tracking-[0.01em] text-neutral-400">
-            © 2026 Meridian. All rights reserved.
+            {dict.footer.copyright}
           </p>
         </div>
       </div>

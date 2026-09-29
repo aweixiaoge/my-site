@@ -1,8 +1,9 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { submitInquiry } from "@/app/contact/actions";
+import { submitInquiry } from "@/app/[lang]/contact/actions";
 import { ContactForm } from "@/components/contact-form";
+import { en } from "@/lib/i18n/dictionaries/en";
 
-jest.mock("@/app/contact/actions", () => ({
+jest.mock("@/app/[lang]/contact/actions", () => ({
   submitInquiry: jest.fn(),
 }));
 
@@ -30,7 +31,7 @@ describe("ContactForm", () => {
   });
 
   it("should_render_the_fields_and_button_from_the_design", () => {
-    render(<ContactForm />);
+    render(<ContactForm dict={en} />);
 
     expect(screen.getByLabelText("Name")).toBeInTheDocument();
     expect(screen.getByLabelText("Email")).toBeInTheDocument();
@@ -42,7 +43,7 @@ describe("ContactForm", () => {
   });
 
   it("should_render_the_placeholder_copy_from_the_design", () => {
-    render(<ContactForm />);
+    render(<ContactForm dict={en} />);
 
     expect(screen.getByPlaceholderText("Jane Cooper")).toBeInTheDocument();
     expect(
@@ -55,7 +56,7 @@ describe("ContactForm", () => {
   });
 
   it("should_block_an_empty_submission_and_explain_what_is_missing", async () => {
-    render(<ContactForm />);
+    render(<ContactForm dict={en} />);
 
     submit();
 
@@ -66,7 +67,7 @@ describe("ContactForm", () => {
   });
 
   it("should_block_a_malformed_email_before_calling_the_server", async () => {
-    render(<ContactForm />);
+    render(<ContactForm dict={en} />);
     typeInto("Name", inquiry.name);
     typeInto("Email", "jane");
     typeInto("Message", inquiry.message);
@@ -80,7 +81,7 @@ describe("ContactForm", () => {
   });
 
   it("should_send_the_inquiry_and_confirm_it_was_received", async () => {
-    render(<ContactForm />);
+    render(<ContactForm dict={en} />);
     typeInto("Name", inquiry.name);
     typeInto("Email", inquiry.email);
     typeInto("Subject", inquiry.subject);
@@ -95,7 +96,7 @@ describe("ContactForm", () => {
   });
 
   it("should_clear_the_fields_once_the_inquiry_is_sent", async () => {
-    render(<ContactForm />);
+    render(<ContactForm dict={en} />);
     typeInto("Name", inquiry.name);
     typeInto("Email", inquiry.email);
     typeInto("Message", inquiry.message);
@@ -113,7 +114,7 @@ describe("ContactForm", () => {
       ok: false,
       error: "We could not send your message.",
     });
-    render(<ContactForm />);
+    render(<ContactForm dict={en} />);
     typeInto("Name", inquiry.name);
     typeInto("Email", inquiry.email);
     typeInto("Message", inquiry.message);

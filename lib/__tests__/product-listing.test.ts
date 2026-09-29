@@ -144,28 +144,28 @@ describe("paginate", () => {
 
 describe("productListingHref", () => {
   it("should_point_at_the_bare_listing_by_default", () => {
-    expect(productListingHref({})).toBe("/product");
-    expect(productListingHref({ category: "", q: "", page: 1 })).toBe("/product");
+    expect(productListingHref("en", {})).toBe("/en/product");
+    expect(productListingHref("en", { category: "", q: "", page: 1 })).toBe("/en/product");
   });
 
   it("should_include_the_category", () => {
-    expect(productListingHref({ category: "cat-1" })).toBe(
-      "/product?category=cat-1",
+    expect(productListingHref("en", { category: "cat-1" })).toBe(
+      "/en/product?category=cat-1",
     );
   });
 
   it("should_encode_the_query", () => {
-    expect(productListingHref({ q: "data sync" })).toBe("/product?q=data+sync");
+    expect(productListingHref("en", { q: "data sync" })).toBe("/en/product?q=data+sync");
   });
 
   it("should_omit_page_one_but_keep_later_pages", () => {
-    expect(productListingHref({ page: 1 })).toBe("/product");
-    expect(productListingHref({ page: 2 })).toBe("/product?page=2");
+    expect(productListingHref("en", { page: 1 })).toBe("/en/product");
+    expect(productListingHref("en", { page: 2 })).toBe("/en/product?page=2");
   });
 
   it("should_keep_all_filters_together", () => {
     expect(
-      productListingHref({ category: "cat-1", q: "sync", page: 2 }),
-    ).toBe("/product?category=cat-1&q=sync&page=2");
+      productListingHref("en", { category: "cat-1", q: "sync", page: 2 }),
+    ).toBe("/en/product?category=cat-1&q=sync&page=2");
   });
 });

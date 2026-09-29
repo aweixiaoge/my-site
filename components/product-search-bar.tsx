@@ -3,14 +3,20 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Dropdown } from "@/components/dropdown";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/locales";
 import { productListingHref } from "@/lib/product-listing";
 import type { ProductCategory } from "@/sanity/types";
 
 export function ProductSearchBar({
+  locale,
+  dict,
   categories,
   category,
   q,
 }: {
+  locale: Locale;
+  dict: Dictionary;
   categories: ProductCategory[];
   category: string;
   q: string;
@@ -19,32 +25,36 @@ export function ProductSearchBar({
   const [query, setQuery] = useState(q);
 
   const options = [
-    { label: "All Products", value: "" },
+    { label: dict.product.allProducts, value: "" },
     ...categories.map((item) => ({ label: item.title, value: item._id })),
   ];
 
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
       <Dropdown
-        label="Category"
+        label={dict.product.categoryLabel}
         options={options}
         value={category}
         onChange={(value) => {
-          router.push(productListingHref({ category: value, q, page: 1 }));
+          router.push(
+            productListingHref(locale, { category: value, q, page: 1 }),
+          );
         }}
       />
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          router.push(productListingHref({ category, q: query, page: 1 }));
+          router.push(
+            productListingHref(locale, { category, q: query, page: 1 }),
+          );
         }}
       >
         <input
           type="search"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search products"
-          aria-label="Search products"
+          placeholder={dict.product.searchPlaceholder}
+          aria-label={dict.product.searchLabel}
           className="h-10 w-full rounded-lg border border-neutral-200 bg-white px-3 text-sm leading-[1.5] text-neutral-950 placeholder:text-neutral-400 sm:w-[370px]"
         />
       </form>

@@ -10,7 +10,7 @@ const items = [
 
 describe("ProductBreadcrumb", () => {
   it("should_render_a_named_breadcrumb_navigation", () => {
-    render(<ProductBreadcrumb items={items} />);
+    render(<ProductBreadcrumb items={items} label="Breadcrumb" />);
 
     expect(
       screen.getByRole("navigation", { name: "Breadcrumb" }),
@@ -18,7 +18,7 @@ describe("ProductBreadcrumb", () => {
   });
 
   it("should_link_each_ancestor_crumb", () => {
-    render(<ProductBreadcrumb items={items} />);
+    render(<ProductBreadcrumb items={items} label="Breadcrumb" />);
 
     expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute(
       "href",
@@ -35,7 +35,7 @@ describe("ProductBreadcrumb", () => {
   });
 
   it("should_render_the_last_crumb_as_the_current_page_without_a_link", () => {
-    render(<ProductBreadcrumb items={items} />);
+    render(<ProductBreadcrumb items={items} label="Breadcrumb" />);
 
     expect(
       screen.queryByRole("link", { name: "Forecasting" }),
@@ -47,7 +47,7 @@ describe("ProductBreadcrumb", () => {
   });
 
   it("should_render_a_divider_between_each_pair_of_crumbs", () => {
-    render(<ProductBreadcrumb items={items} />);
+    render(<ProductBreadcrumb items={items} label="Breadcrumb" />);
 
     expect(screen.getAllByText("/")).toHaveLength(items.length - 1);
   });

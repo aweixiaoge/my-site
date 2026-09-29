@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { ProductSearchBar } from "@/components/product-search-bar";
+import { en } from "@/lib/i18n/dictionaries/en";
 
 const mockPush = jest.fn();
 
@@ -18,7 +19,7 @@ describe("ProductSearchBar", () => {
   });
 
   it("should_render_the_all_products_filter_by_default", () => {
-    render(<ProductSearchBar categories={categories} category="" q="" />);
+    render(<ProductSearchBar locale="en" dict={en} categories={categories} category="" q="" />);
 
     expect(screen.getByRole("button", { name: "Category" })).toHaveTextContent(
       "All Products",
@@ -26,7 +27,7 @@ describe("ProductSearchBar", () => {
   });
 
   it("should_offer_every_category_plus_all_products", () => {
-    render(<ProductSearchBar categories={categories} category="" q="" />);
+    render(<ProductSearchBar locale="en" dict={en} categories={categories} category="" q="" />);
 
     fireEvent.click(screen.getByRole("button", { name: "Category" }));
 
@@ -46,7 +47,7 @@ describe("ProductSearchBar", () => {
 
   it("should_show_the_selected_category_on_the_trigger", () => {
     render(
-      <ProductSearchBar categories={categories} category="cat-earbud" q="" />,
+      <ProductSearchBar locale="en" dict={en} categories={categories} category="cat-earbud" q="" />,
     );
 
     expect(screen.getByRole("button", { name: "Category" })).toHaveTextContent(
@@ -55,16 +56,16 @@ describe("ProductSearchBar", () => {
   });
 
   it("should_navigate_with_the_chosen_category_and_keep_the_query", () => {
-    render(<ProductSearchBar categories={categories} category="" q="phone" />);
+    render(<ProductSearchBar locale="en" dict={en} categories={categories} category="" q="phone" />);
 
     fireEvent.click(screen.getByRole("button", { name: "Category" }));
     fireEvent.click(screen.getByRole("button", { name: "earbud" }));
 
-    expect(mockPush).toHaveBeenCalledWith("/product?category=cat-earbud&q=phone");
+    expect(mockPush).toHaveBeenCalledWith("/en/product?category=cat-earbud&q=phone");
   });
 
   it("should_render_the_current_search_query", () => {
-    render(<ProductSearchBar categories={categories} category="" q="phone" />);
+    render(<ProductSearchBar locale="en" dict={en} categories={categories} category="" q="phone" />);
 
     expect(screen.getByRole("searchbox", { name: "Search products" })).toHaveValue(
       "phone",
@@ -73,7 +74,7 @@ describe("ProductSearchBar", () => {
 
   it("should_navigate_with_the_search_query_and_keep_the_category", () => {
     const { container } = render(
-      <ProductSearchBar categories={categories} category="cat-headphone" q="" />,
+      <ProductSearchBar locale="en" dict={en} categories={categories} category="cat-headphone" q="" />,
     );
 
     fireEvent.change(screen.getByRole("searchbox", { name: "Search products" }), {
@@ -82,7 +83,7 @@ describe("ProductSearchBar", () => {
     fireEvent.submit(container.querySelector("form")!);
 
     expect(mockPush).toHaveBeenCalledWith(
-      "/product?category=cat-headphone&q=data+sync",
+      "/en/product?category=cat-headphone&q=data+sync",
     );
   });
 });

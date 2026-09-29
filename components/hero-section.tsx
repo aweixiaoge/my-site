@@ -1,19 +1,25 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PrimaryButton } from "@/components/primary-button";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/locales";
+import { localizedHref } from "@/lib/i18n/localized-href";
 import { getHero } from "@/sanity/hero";
-import type { Hero } from "@/sanity/types";
 
-const FALLBACK_HERO: NonNullable<Hero> = {
-  title: "Modern infrastructure for B2B teams",
-  description:
-    "Meridian unifies your data, workflows, and integrations in one platform, so every team works from the same live picture of the business. No exports, no stale spreadsheets, no guessing.",
-  path: "/products",
-  imageUrl: null,
-};
-
-export async function HeroSection() {
-  const hero = (await getHero()) ?? FALLBACK_HERO;
+export async function HeroSection({
+  locale,
+  dict,
+}: {
+  locale: Locale;
+  dict: Dictionary;
+}) {
+  const hero = (await getHero()) ?? {
+    title: dict.home.heroTitle,
+    description: dict.home.heroDescription,
+    path: "/product",
+    imageUrl: null,
+  };
+  const href = localizedHref(locale, hero.path);
 
   return (
     <section className="bg-white px-5 py-16 shadow-[0_4px_20px_rgba(0,0,0,0.08)] sm:px-10 lg:px-20 lg:py-24">
@@ -29,14 +35,11 @@ export async function HeroSection() {
               </p>
             ) : null}
           </div>
-          <PrimaryButton href={hero.path}>Check out</PrimaryButton>
+          <PrimaryButton href={href}>{dict.home.heroCta}</PrimaryButton>
         </div>
         <div className="relative aspect-[615/384] flex-1 overflow-hidden rounded-xl border border-neutral-200 lg:aspect-auto lg:h-[384px]">
           {hero.imageUrl ? (
-            <Link
-              href={hero.path}
-              className="relative block h-full w-full"
-            >
+            <Link href={href} className="relative block h-full w-full">
               <Image
                 src={hero.imageUrl}
                 alt={hero.title}

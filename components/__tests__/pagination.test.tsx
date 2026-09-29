@@ -6,14 +6,20 @@ const buildHref = (page: number) => `/product?page=${page}`;
 describe("Pagination", () => {
   it("should_render_nothing_when_there_is_only_one_page", () => {
     const { container } = render(
-      <Pagination currentPage={1} totalPages={1} buildHref={buildHref} />,
+      <Pagination
+        currentPage={1}
+        totalPages={1}
+        buildHref={buildHref}
+        nextLabel="Next"
+        navLabel="Pagination"
+      />,
     );
 
     expect(container).toBeEmptyDOMElement();
   });
 
   it("should_render_a_link_for_every_page", () => {
-    render(<Pagination currentPage={1} totalPages={3} buildHref={buildHref} />);
+    render(<Pagination currentPage={1} totalPages={3} buildHref={buildHref} nextLabel="Next" navLabel="Pagination" />);
 
     expect(screen.getByRole("link", { name: "1" })).toHaveAttribute(
       "href",
@@ -30,7 +36,7 @@ describe("Pagination", () => {
   });
 
   it("should_mark_the_current_page", () => {
-    render(<Pagination currentPage={2} totalPages={3} buildHref={buildHref} />);
+    render(<Pagination currentPage={2} totalPages={3} buildHref={buildHref} nextLabel="Next" navLabel="Pagination" />);
 
     expect(screen.getByRole("link", { name: "2" })).toHaveAttribute(
       "aria-current",
@@ -42,7 +48,7 @@ describe("Pagination", () => {
   });
 
   it("should_style_the_current_page_with_the_accent_color", () => {
-    render(<Pagination currentPage={1} totalPages={2} buildHref={buildHref} />);
+    render(<Pagination currentPage={1} totalPages={2} buildHref={buildHref} nextLabel="Next" navLabel="Pagination" />);
 
     expect(screen.getByRole("link", { name: "1" })).toHaveClass(
       "bg-accent",
@@ -54,7 +60,7 @@ describe("Pagination", () => {
   });
 
   it("should_link_to_the_next_page_when_one_exists", () => {
-    render(<Pagination currentPage={1} totalPages={2} buildHref={buildHref} />);
+    render(<Pagination currentPage={1} totalPages={2} buildHref={buildHref} nextLabel="Next" navLabel="Pagination" />);
 
     expect(screen.getByRole("link", { name: /Next/ })).toHaveAttribute(
       "href",
@@ -63,7 +69,7 @@ describe("Pagination", () => {
   });
 
   it("should_render_next_as_disabled_on_the_last_page", () => {
-    render(<Pagination currentPage={2} totalPages={2} buildHref={buildHref} />);
+    render(<Pagination currentPage={2} totalPages={2} buildHref={buildHref} nextLabel="Next" navLabel="Pagination" />);
 
     expect(screen.queryByRole("link", { name: /Next/ })).not.toBeInTheDocument();
     expect(screen.getByText("Next")).toHaveAttribute("aria-disabled", "true");

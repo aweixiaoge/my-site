@@ -73,46 +73,53 @@ function IconCompass() {
   );
 }
 
-const VALUES: { title: string; description: string; icon: ReactNode }[] = [
-  {
-    title: "Customer First",
-    description: "Starts with the people using it.",
-    icon: <IconUsers />,
-  },
-  {
-    title: "Build in the Open",
-    description: "Roadmap and docs are public.",
-    icon: <IconCode />,
-  },
-  {
-    title: "Trust by Default",
-    description: "Secure and private by design.",
-    icon: <IconShield />,
-  },
-  {
-    title: "Think Long Term",
-    description: "We plan in decades, not quarters.",
-    icon: <IconCompass />,
-  },
-];
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
-export function AboutMissionSection() {
+function valuesFor(dict: Dictionary): {
+  title: string;
+  description: string;
+  icon: ReactNode;
+}[] {
+  return [
+    {
+      title: dict.about.valueCustomerTitle,
+      description: dict.about.valueCustomerDescription,
+      icon: <IconUsers />,
+    },
+    {
+      title: dict.about.valueOpenTitle,
+      description: dict.about.valueOpenDescription,
+      icon: <IconCode />,
+    },
+    {
+      title: dict.about.valueTrustTitle,
+      description: dict.about.valueTrustDescription,
+      icon: <IconShield />,
+    },
+    {
+      title: dict.about.valueLongTermTitle,
+      description: dict.about.valueLongTermDescription,
+      icon: <IconCompass />,
+    },
+  ];
+}
+
+export function AboutMissionSection({ dict }: { dict: Dictionary }) {
   return (
     <section className="flex flex-col gap-16">
       <div className="flex flex-col gap-6">
         <h2 className="text-2xl leading-[1.2] font-bold text-neutral-950">
-          Our Mission
+          {dict.about.missionTitle}
         </h2>
         <p className="text-xs leading-[1.2] tracking-[-0.02em] text-neutral-950">
-          to make cutting-edge technology accessible, reliable, and enjoyable for everyday users. With a team of more than 500 engineers, designers, and support professionals, we invest heavily in research and development to stay at the forefront of industry trends.
+          {dict.about.missionStatement}
         </p>
         <p className="text-xs leading-[1.25] text-neutral-600">
-          We remove the friction between a good idea and a shipped product, for
-          every team, at every size.
+          {dict.about.missionSupporting}
         </p>
       </div>
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-        {VALUES.map((value) => (
+        {valuesFor(dict).map((value) => (
           <div
             key={value.title}
             className="flex flex-col gap-4 rounded-xl border border-neutral-200 bg-white p-6"

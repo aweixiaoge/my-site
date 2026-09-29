@@ -8,6 +8,7 @@ import {
   IconPhone,
   IconYoutube,
 } from "@/components/contact-icons";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { getContactInfo } from "@/sanity/contact-info";
 import type { ContactInfo } from "@/sanity/types";
 
@@ -24,13 +25,16 @@ type SocialLink = {
   icon: ReactNode;
 };
 
-function buildCards(contactInfo: NonNullable<ContactInfo>): InfoCard[] {
+function buildCards(
+  contactInfo: NonNullable<ContactInfo>,
+  dict: Dictionary,
+): InfoCard[] {
   const cards: InfoCard[] = [];
 
   const email = contactInfo.email?.trim();
   if (email) {
     cards.push({
-      label: "Email",
+      label: dict.contact.labelEmail,
       value: email,
       icon: <IconMail />,
       href: `mailto:${email}`,
@@ -39,13 +43,13 @@ function buildCards(contactInfo: NonNullable<ContactInfo>): InfoCard[] {
 
   const phone = contactInfo.phone?.trim();
   if (phone) {
-    cards.push({ label: "Phone", value: phone, icon: <IconPhone /> });
+    cards.push({ label: dict.contact.labelPhone, value: phone, icon: <IconPhone /> });
   }
 
   const whatsapp = contactInfo.whatsapp?.trim();
   if (whatsapp) {
     cards.push({
-      label: "WhatsApp",
+      label: dict.contact.labelWhatsApp,
       value: whatsapp,
       icon: <IconMessageCircle />,
     });
@@ -53,42 +57,45 @@ function buildCards(contactInfo: NonNullable<ContactInfo>): InfoCard[] {
 
   const address = contactInfo.address?.trim();
   if (address) {
-    cards.push({ label: "Address", value: address, icon: <IconMapPin /> });
+    cards.push({ label: dict.contact.labelAddress, value: address, icon: <IconMapPin /> });
   }
 
   return cards;
 }
 
-function buildSocialLinks(contactInfo: NonNullable<ContactInfo>): SocialLink[] {
+function buildSocialLinks(
+  contactInfo: NonNullable<ContactInfo>,
+  dict: Dictionary,
+): SocialLink[] {
   const links: SocialLink[] = [];
 
   const youtube = contactInfo.youtube?.trim();
   if (youtube) {
-    links.push({ label: "YouTube", href: youtube, icon: <IconYoutube /> });
+    links.push({ label: dict.contact.labelYouTube, href: youtube, icon: <IconYoutube /> });
   }
 
   const facebook = contactInfo.facebook?.trim();
   if (facebook) {
-    links.push({ label: "Facebook", href: facebook, icon: <IconFacebook /> });
+    links.push({ label: dict.contact.labelFacebook, href: facebook, icon: <IconFacebook /> });
   }
 
   const instagram = contactInfo.instagram?.trim();
   if (instagram) {
-    links.push({ label: "Instagram", href: instagram, icon: <IconInstagram /> });
+    links.push({ label: dict.contact.labelInstagram, href: instagram, icon: <IconInstagram /> });
   }
 
   return links;
 }
 
-export async function ContactInfoSection() {
+export async function ContactInfoSection({ dict }: { dict: Dictionary }) {
   const contactInfo = await getContactInfo();
 
   if (!contactInfo) {
     return null;
   }
 
-  const cards = buildCards(contactInfo);
-  const socialLinks = buildSocialLinks(contactInfo);
+  const cards = buildCards(contactInfo, dict);
+  const socialLinks = buildSocialLinks(contactInfo, dict);
 
   return (
     <section className="flex flex-col lg:max-w-[612px] lg:flex-[612_1_0%]">

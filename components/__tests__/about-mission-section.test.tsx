@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { AboutMissionSection } from "@/components/about-mission-section";
+import { en } from "@/lib/i18n/dictionaries/en";
 
 const VALUES = [
   { title: "Customer First", description: "Starts with the people using it." },
@@ -10,7 +11,7 @@ const VALUES = [
 
 describe("AboutMissionSection", () => {
   it("should_render_the_section_heading", () => {
-    render(<AboutMissionSection />);
+    render(<AboutMissionSection dict={en} />);
 
     expect(
       screen.getByRole("heading", { level: 2, name: "Our Mission" }),
@@ -18,17 +19,17 @@ describe("AboutMissionSection", () => {
   });
 
   it("should_render_the_mission_statement", () => {
-    render(<AboutMissionSection />);
+    render(<AboutMissionSection dict={en} />);
 
     expect(
       screen.getByText(
-        "Make enterprise software feel as simple as the tools people choose for themselves.",
+        "to make cutting-edge technology accessible, reliable, and enjoyable for everyday users. With a team of more than 500 engineers, designers, and support professionals, we invest heavily in research and development to stay at the forefront of industry trends.",
       ),
     ).toBeInTheDocument();
   });
 
   it("should_render_the_supporting_copy", () => {
-    render(<AboutMissionSection />);
+    render(<AboutMissionSection dict={en} />);
 
     expect(
       screen.getByText(
@@ -38,7 +39,7 @@ describe("AboutMissionSection", () => {
   });
 
   it("should_render_a_card_for_every_value", () => {
-    render(<AboutMissionSection />);
+    render(<AboutMissionSection dict={en} />);
 
     for (const value of VALUES) {
       expect(
@@ -49,7 +50,7 @@ describe("AboutMissionSection", () => {
   });
 
   it("should_render_an_icon_for_every_value", () => {
-    const { container } = render(<AboutMissionSection />);
+    const { container } = render(<AboutMissionSection dict={en} />);
 
     expect(container.querySelectorAll("svg")).toHaveLength(VALUES.length);
   });

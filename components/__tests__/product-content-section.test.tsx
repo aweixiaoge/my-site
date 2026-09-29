@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { ProductContentSection } from "@/components/product-content-section";
+import { en } from "@/lib/i18n/dictionaries/en";
 import { getProductCategories, getProducts } from "@/sanity/products";
 
 jest.mock("next/navigation", () => ({
@@ -37,7 +38,7 @@ describe("ProductContentSection", () => {
   });
 
   it("should_render_the_page_heading", async () => {
-    render(await ProductContentSection({ filters: noFilters }));
+    render(await ProductContentSection({ locale: "en", dict: en, filters: noFilters }));
 
     expect(
       screen.getByRole("heading", { level: 1, name: "Product" }),
@@ -45,7 +46,7 @@ describe("ProductContentSection", () => {
   });
 
   it("should_render_the_first_nine_products_on_the_first_page", async () => {
-    render(await ProductContentSection({ filters: noFilters }));
+    render(await ProductContentSection({ locale: "en", dict: en, filters: noFilters }));
 
     for (let index = 1; index <= 9; index += 1) {
       expect(screen.getByText(`Product ${index}`)).toBeInTheDocument();
@@ -54,7 +55,7 @@ describe("ProductContentSection", () => {
   });
 
   it("should_render_the_remaining_product_on_the_second_page", async () => {
-    render(await ProductContentSection({ filters: { ...noFilters, page: 2 } }));
+    render(await ProductContentSection({ locale: "en", dict: en, filters: { ...noFilters, page: 2 } }));
 
     expect(screen.getByText("Product 10")).toBeInTheDocument();
     expect(screen.queryByText("Product 1")).not.toBeInTheDocument();
@@ -63,6 +64,8 @@ describe("ProductContentSection", () => {
   it("should_filter_products_by_category", async () => {
     render(
       await ProductContentSection({
+        locale: "en",
+        dict: en,
         filters: { ...noFilters, category: "cat-b" },
       }),
     );
@@ -74,7 +77,7 @@ describe("ProductContentSection", () => {
 
   it("should_filter_products_by_search_query", async () => {
     render(
-      await ProductContentSection({ filters: { ...noFilters, q: "Product 1" } }),
+      await ProductContentSection({ locale: "en", dict: en, filters: { ...noFilters, q: "Product 1" } }),
     );
 
     expect(screen.getByText("Product 1")).toBeInTheDocument();
@@ -84,22 +87,24 @@ describe("ProductContentSection", () => {
 
   it("should_keep_the_filters_in_the_pagination_links", async () => {
     render(
-      await ProductContentSection({ filters: { ...noFilters, q: "Product" } }),
+      await ProductContentSection({ locale: "en", dict: en, filters: { ...noFilters, q: "Product" } }),
     );
 
     expect(screen.getByRole("link", { name: "2" })).toHaveAttribute(
       "href",
-      "/product?q=Product&page=2",
+      "/en/product?q=Product&page=2",
     );
     expect(screen.getByRole("link", { name: /Next/ })).toHaveAttribute(
       "href",
-      "/product?q=Product&page=2",
+      "/en/product?q=Product&page=2",
     );
   });
 
   it("should_render_the_search_bar_with_the_current_filters", async () => {
     render(
       await ProductContentSection({
+        locale: "en",
+        dict: en,
         filters: { category: "cat-a", q: "alpha", page: 1 },
       }),
     );
@@ -113,7 +118,7 @@ describe("ProductContentSection", () => {
   });
 
   it("should_render_no_products_when_nothing_matches_the_filters", async () => {
-    render(await ProductContentSection({ filters: { ...noFilters, q: "zzz" } }));
+    render(await ProductContentSection({ locale: "en", dict: en, filters: { ...noFilters, q: "zzz" } }));
 
     expect(screen.queryByText(/Product \d/)).not.toBeInTheDocument();
     expect(
@@ -124,7 +129,7 @@ describe("ProductContentSection", () => {
   it("should_keep_the_heading_and_search_bar_when_sanity_returns_nothing", async () => {
     mockGetProducts.mockResolvedValue([]);
 
-    render(await ProductContentSection({ filters: noFilters }));
+    render(await ProductContentSection({ locale: "en", dict: en, filters: noFilters }));
 
     expect(
       screen.getByRole("heading", { level: 1, name: "Product" }),

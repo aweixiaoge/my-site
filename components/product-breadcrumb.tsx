@@ -5,9 +5,15 @@ export type BreadcrumbItem = {
   href?: string;
 };
 
-export function ProductBreadcrumb({ items }: { items: BreadcrumbItem[] }) {
+export function ProductBreadcrumb({
+  items,
+  label,
+}: {
+  items: BreadcrumbItem[];
+  label: string;
+}) {
   return (
-    <nav aria-label="Breadcrumb">
+    <nav aria-label={label}>
       <ol className="flex flex-wrap items-center gap-2 text-sm leading-[1.5] text-neutral-600">
         {items.map((item, index) => (
           <li

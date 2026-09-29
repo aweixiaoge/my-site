@@ -1,7 +1,15 @@
+import { localizedHref } from "@/lib/i18n/localized-href";
+import { LOCALE_TAGS, type Locale } from "@/lib/i18n/locales";
 import type { BlogPost } from "@/sanity/types";
 
 export const BLOG_PAGE_SIZE = 6;
 
+/**
+ * Deliberately English and deliberately not in the dictionary: this is compared
+ * against the label document referenced by each post in Sanity, which stores
+ * English titles. Translating it would silently reclassify every post as
+ * non-featured.
+ */
 const FEATURED_LABEL = "Featured";
 
 export function parseBlogPage(
@@ -32,7 +40,10 @@ export function splitBlogPosts(posts: BlogPost[]): {
   return { featured, rest };
 }
 
-export function formatPostDate(createdTime?: string | null): string {
+export function formatPostDate(
+  locale: Locale,
+  createdTime?: string | null,
+): string {
   const match = createdTime?.match(/^(\d{4})-(\d{2})-(\d{2})$/);
   if (!match) {
     return "";
@@ -51,7 +62,7 @@ export function formatPostDate(createdTime?: string | null): string {
     return "";
   }
 
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(LOCALE_TAGS[locale], {
     month: "long",
     day: "numeric",
     year: "numeric",
@@ -59,19 +70,21 @@ export function formatPostDate(createdTime?: string | null): string {
   }).format(date);
 }
 
-export function formatPostMeta({
-  author,
-  createdTime,
-}: Pick<BlogPost, "author" | "createdTime">): string {
-  return [author, formatPostDate(createdTime)].filter(Boolean).join(" · ");
+export function formatPostMeta(
+  locale: Locale,
+  { author, createdTime }: Pick<BlogPost, "author" | "createdTime">,
+): string {
+  return [author, formatPostDate(locale, createdTime)]
+    .filter(Boolean)
+    .join(" · ");
 }
 
-export function blogListingHref(page: number): string {
-  return page > 1 ? `/blog?page=${page}` : "/blog";
+export function blogListingHref(locale: Locale, page: number): string {
+  return localizedHref(locale, page > 1 ? `/blog?page=${page}` : "/blog");
 }
 
-export function blogDetailHref(slug: string): string {
-  return `/blog/${slug}`;
+export function blogDetailHref(locale: Locale, slug: string): string {
+  return localizedHref(locale, `/blog/${slug}`);
 }
 
 const ID_TAIL_LENGTH = 8;

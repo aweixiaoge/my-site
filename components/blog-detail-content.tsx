@@ -3,6 +3,9 @@ import { PostBadge } from "@/components/post-badge";
 import { ProductBreadcrumb } from "@/components/product-breadcrumb";
 import { ProductGallery } from "@/components/product-gallery";
 import { formatPostDate } from "@/lib/blog";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/locales";
+import { localizedHref } from "@/lib/i18n/localized-href";
 import type { BlogPostDetail } from "@/sanity/types";
 
 const bodyComponents: PortableTextComponents = {
@@ -13,17 +16,26 @@ const bodyComponents: PortableTextComponents = {
   },
 };
 
-export function BlogDetailContent({ post }: { post: BlogPostDetail }) {
+export function BlogDetailContent({
+  post,
+  locale,
+  dict,
+}: {
+  post: BlogPostDetail;
+  locale: Locale;
+  dict: Dictionary;
+}) {
   const author = post.author || null;
-  const date = formatPostDate(post.createdTime);
+  const date = formatPostDate(locale, post.createdTime);
   const hasBody = Boolean(post.body?.length);
 
   return (
     <section className="flex flex-col gap-12 bg-white px-5 py-16 sm:px-10 lg:gap-24 lg:px-20 lg:py-24">
       <ProductBreadcrumb
+        label={dict.common.breadcrumb}
         items={[
-          { label: "Home", href: "/" },
-          { label: "Blog", href: "/blog" },
+          { label: dict.common.home, href: localizedHref(locale, "/") },
+          { label: dict.blog.title, href: localizedHref(locale, "/blog") },
           { label: post.title },
         ]}
       />

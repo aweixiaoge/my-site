@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { ContactInfoSection } from "@/components/contact-info-section";
+import { en } from "@/lib/i18n/dictionaries/en";
 import { getContactInfo } from "@/sanity/contact-info";
 
 jest.mock("@/sanity/contact-info", () => ({
@@ -19,7 +20,7 @@ const contactInfo = {
 };
 
 async function renderSection() {
-  return render(await ContactInfoSection());
+  return render(await ContactInfoSection({ dict: en }));
 }
 
 describe("ContactInfoSection", () => {

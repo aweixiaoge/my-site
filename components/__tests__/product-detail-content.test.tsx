@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { ProductDetailContent } from "@/components/product-detail-content";
+import { en } from "@/lib/i18n/dictionaries/en";
 import { getRelatedProducts } from "@/sanity/products";
 import type { ProductDetail } from "@/sanity/types";
 
@@ -37,7 +38,7 @@ describe("ProductDetailContent", () => {
   });
 
   it("should_render_the_product_title", async () => {
-    render(await ProductDetailContent({ product }));
+    render(await ProductDetailContent({ locale: "en", dict: en, product }));
 
     expect(
       screen.getByRole("heading", { level: 1, name: "Forecasting" }),
@@ -45,7 +46,7 @@ describe("ProductDetailContent", () => {
   });
 
   it("should_render_the_description_as_the_tagline_and_in_the_description_block", async () => {
-    render(await ProductDetailContent({ product }));
+    render(await ProductDetailContent({ locale: "en", dict: en, product }));
 
     expect(
       screen.getByRole("heading", { level: 2, name: "Description" }),
@@ -56,20 +57,20 @@ describe("ProductDetailContent", () => {
   });
 
   it("should_link_the_breadcrumb_to_the_listing_and_the_category_filter", async () => {
-    render(await ProductDetailContent({ product }));
+    render(await ProductDetailContent({ locale: "en", dict: en, product }));
 
     expect(screen.getByRole("link", { name: "Product" })).toHaveAttribute(
       "href",
-      "/product",
+      "/en/product",
     );
     expect(screen.getByRole("link", { name: "Smartphone" })).toHaveAttribute(
       "href",
-      "/product?category=cat-phone",
+      "/en/product?category=cat-phone",
     );
   });
 
   it("should_render_the_gallery_images_of_the_product", async () => {
-    render(await ProductDetailContent({ product }));
+    render(await ProductDetailContent({ locale: "en", dict: en, product }));
 
     expect(
       screen.getByRole("button", { name: "Show image 2" }),
@@ -77,7 +78,7 @@ describe("ProductDetailContent", () => {
   });
 
   it("should_fetch_and_render_the_related_products_of_the_same_category", async () => {
-    render(await ProductDetailContent({ product }));
+    render(await ProductDetailContent({ locale: "en", dict: en, product }));
 
     expect(mockGetRelatedProducts).toHaveBeenCalledWith({
       categoryId: "cat-phone",
@@ -88,14 +89,14 @@ describe("ProductDetailContent", () => {
     ).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Reporting/ })).toHaveAttribute(
       "href",
-      "/product/smartphone/9",
+      "/en/product/smartphone/9",
     );
   });
 
   it("should_hide_the_related_section_when_there_are_no_related_products", async () => {
     mockGetRelatedProducts.mockResolvedValue([]);
 
-    render(await ProductDetailContent({ product }));
+    render(await ProductDetailContent({ locale: "en", dict: en, product }));
 
     expect(
       screen.queryByRole("heading", { name: "Related Products" }),
@@ -104,7 +105,7 @@ describe("ProductDetailContent", () => {
 
   it("should_not_fetch_related_products_when_the_product_has_no_category", async () => {
     render(
-      await ProductDetailContent({ product: { ...product, category: null } }),
+      await ProductDetailContent({ locale: "en", dict: en, product: { ...product, category: null } }),
     );
 
     expect(mockGetRelatedProducts).not.toHaveBeenCalled();
@@ -115,7 +116,7 @@ describe("ProductDetailContent", () => {
 
   it("should_omit_the_description_block_when_the_product_has_no_description", async () => {
     render(
-      await ProductDetailContent({ product: { ...product, description: null } }),
+      await ProductDetailContent({ locale: "en", dict: en, product: { ...product, description: null } }),
     );
 
     expect(

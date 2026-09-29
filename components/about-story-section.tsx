@@ -1,7 +1,8 @@
 import Image from "next/image";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { getAboutUs } from "@/sanity/about-us";
 
-export async function AboutStorySection() {
+export async function AboutStorySection({ dict }: { dict: Dictionary }) {
   const aboutUs = await getAboutUs();
 
   if (!aboutUs) {
@@ -17,7 +18,7 @@ export async function AboutStorySection() {
       <div className="lg:flex-[673_1_0%]">
         <div className="flex flex-col gap-[30px] lg:px-[30px] lg:py-[50px]">
           <h2 className="text-2xl leading-[1.2] font-bold text-neutral-950">
-            Our Story
+            {dict.about.storyTitle}
           </h2>
           <p className="wrap-anywhere text-xs leading-[1.25] text-neutral-600">
             {aboutUs.storyDescription}
@@ -28,7 +29,7 @@ export async function AboutStorySection() {
         {image ? (
           <Image
             src={image}
-            alt="Our Story"
+            alt={dict.about.storyImageAlt}
             fill
             unoptimized
             loading="eager"

@@ -13,13 +13,19 @@ const items = [
   { label: "Contact", href: "/contact" },
 ];
 
+function renderMenu() {
+  return render(
+    <NavMenu items={items} toggleLabel="Toggle menu" navLabel="Main" />,
+  );
+}
+
 describe("NavMenu", () => {
   beforeEach(() => {
     mockPathname = "/";
   });
 
   it("should_render_a_link_for_each_navigation_item", () => {
-    render(<NavMenu items={items} />);
+    renderMenu();
 
     const nav = screen.getByRole("navigation");
 
@@ -30,7 +36,7 @@ describe("NavMenu", () => {
   it("should_mark_the_link_for_the_current_route_as_active", () => {
     mockPathname = "/products";
 
-    render(<NavMenu items={items} />);
+    renderMenu();
 
     expect(screen.getByRole("link", { name: "Products" })).toHaveAttribute("aria-current", "page");
     expect(screen.getByRole("link", { name: "Contact" })).not.toHaveAttribute("aria-current");
@@ -39,7 +45,7 @@ describe("NavMenu", () => {
   it("should_mark_the_parent_link_as_active_on_a_nested_route", () => {
     mockPathname = "/products/widget";
 
-    render(<NavMenu items={items} />);
+    renderMenu();
 
     expect(screen.getByRole("link", { name: "Products" })).toHaveAttribute("aria-current", "page");
   });
@@ -47,7 +53,7 @@ describe("NavMenu", () => {
   it("should_not_mark_home_as_active_on_another_route", () => {
     mockPathname = "/products";
 
-    render(<NavMenu items={items} />);
+    renderMenu();
 
     expect(screen.getByRole("link", { name: "Home" })).not.toHaveAttribute("aria-current");
   });
@@ -55,7 +61,7 @@ describe("NavMenu", () => {
   it("should_render_every_link_with_the_same_style_regardless_of_route", () => {
     mockPathname = "/";
 
-    render(<NavMenu items={items} />);
+    renderMenu();
 
     const links = within(screen.getByRole("navigation")).getAllByRole("link");
     const distinctClassNames = new Set(links.map((link) => link.className));
@@ -64,7 +70,7 @@ describe("NavMenu", () => {
   });
 
   it("should_expand_the_menu_when_the_toggle_is_clicked", () => {
-    render(<NavMenu items={items} />);
+    renderMenu();
 
     const toggle = screen.getByRole("button", { name: /menu/i });
     expect(toggle).toHaveAttribute("aria-expanded", "false");
@@ -75,7 +81,7 @@ describe("NavMenu", () => {
   });
 
   it("should_collapse_the_menu_when_a_link_is_clicked", () => {
-    render(<NavMenu items={items} />);
+    renderMenu();
     fireEvent.click(screen.getByRole("button", { name: /menu/i }));
 
     fireEvent.click(screen.getByRole("link", { name: "Products" }));

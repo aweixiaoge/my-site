@@ -2,13 +2,32 @@
 
 import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
-import { submitInquiry } from "@/app/contact/actions";
+import { submitInquiry } from "@/app/[lang]/contact/actions";
 import {
   EMPTY_INQUIRY,
   validateInquiry,
   type InquiryErrors,
+  type InquiryFieldError,
   type InquiryValues,
 } from "@/lib/contact-form";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+
+/** Field error codes are language-free; this is where they become copy. */
+function fieldErrorMessage(
+  code: InquiryFieldError,
+  dict: Dictionary,
+): string {
+  switch (code) {
+    case "name-required":
+      return dict.contact.errorNameRequired;
+    case "email-required":
+      return dict.contact.errorEmailRequired;
+    case "email-invalid":
+      return dict.contact.errorEmailInvalid;
+    case "message-required":
+      return dict.contact.errorMessageRequired;
+  }
+}
 
 const FIELD_CLASS =
   "rounded-lg border border-neutral-200 bg-white text-sm leading-[1.5] text-neutral-950 placeholder:text-neutral-400";
@@ -72,7 +91,7 @@ function Field({
   );
 }
 
-export function ContactForm() {
+export function ContactForm({ dict }: { dict: Dictionary }) {
   const [values, setValues] = useState<InquiryValues>(EMPTY_INQUIRY);
   const [errors, setErrors] = useState<InquiryErrors>({});
   const [status, setStatus] = useState<
@@ -105,7 +124,11 @@ export function ContactForm() {
       return;
     }
 
-    setSubmitError(result.error);
+    setSubmitError(
+      result.code === "invalid"
+        ? dict.contact.errorValidation
+        : dict.contact.errorSubmit,
+    );
     setStatus("error");
   }
 
@@ -113,35 +136,39 @@ export function ContactForm() {
     <form noValidate onSubmit={handleSubmit} className="flex flex-col gap-8">
       <div className="flex flex-col gap-6">
         <Field
-          label="Name"
+          label={dict.contact.fieldName}
           name="name"
-          placeholder="Jane Cooper"
+          placeholder={dict.contact.fieldNamePlaceholder}
           value={values.name}
-          error={errors.name}
+          error={errors.name ? fieldErrorMessage(errors.name, dict) : undefined}
           onChange={updateValue}
         />
         <Field
-          label="Email"
+          label={dict.contact.fieldEmail}
           name="email"
           type="email"
-          placeholder="jane@company.com"
+          placeholder={dict.contact.fieldEmailPlaceholder}
           value={values.email}
-          error={errors.email}
+          error={
+            errors.email ? fieldErrorMessage(errors.email, dict) : undefined
+          }
           onChange={updateValue}
         />
         <Field
-          label="Subject"
+          label={dict.contact.fieldSubject}
           name="subject"
-          placeholder="Partnership enquiry"
+          placeholder={dict.contact.fieldSubjectPlaceholder}
           value={values.subject}
           onChange={updateValue}
         />
         <Field
-          label="Message"
+          label={dict.contact.fieldMessage}
           name="message"
-          placeholder="How can we help?"
+          placeholder={dict.contact.fieldMessagePlaceholder}
           value={values.message}
-          error={errors.message}
+          error={
+            errors.message ? fieldErrorMessage(errors.message, dict) : undefined
+          }
           onChange={updateValue}
           multiline
         />
@@ -152,12 +179,11 @@ export function ContactForm() {
           disabled={status === "submitting"}
           className="inline-flex h-10 w-fit items-center justify-center rounded-lg bg-accent px-5 text-sm font-medium text-white transition-colors hover:bg-accent/90 disabled:opacity-60"
         >
-          Send Message
+          {dict.contact.submit}
         </button>
         {status === "success" ? (
           <p role="status" className="text-sm leading-[1.5] text-neutral-600">
-            Thanks for reaching out — we will get back to you within one
-            business day.
+            {dict.contact.success}
           </p>
         ) : null}
         {status === "error" ? (

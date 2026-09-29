@@ -4,14 +4,21 @@ import {
 } from "@/components/product-breadcrumb";
 import { ProductCard } from "@/components/product-card";
 import { ProductGallery } from "@/components/product-gallery";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/locales";
+import { localizedHref } from "@/lib/i18n/localized-href";
 import { productListingHref } from "@/lib/product-listing";
 import { getRelatedProducts } from "@/sanity/products";
 import type { ProductDetail } from "@/sanity/types";
 
 export async function ProductDetailContent({
   product,
+  locale,
+  dict,
 }: {
   product: ProductDetail;
+  locale: Locale;
+  dict: Dictionary;
 }) {
   const related = product.category
     ? await getRelatedProducts({
@@ -21,13 +28,15 @@ export async function ProductDetailContent({
     : [];
 
   const breadcrumbItems: BreadcrumbItem[] = [
-    { label: "Home", href: "/" },
-    { label: "Product", href: "/product" },
+    { label: dict.common.home, href: localizedHref(locale, "/") },
+    { label: dict.product.title, href: localizedHref(locale, "/product") },
     ...(product.category
       ? [
           {
             label: product.category.title,
-            href: productListingHref({ category: product.category._id }),
+            href: productListingHref(locale, {
+              category: product.category._id,
+            }),
           },
         ]
       : []),
@@ -36,7 +45,10 @@ export async function ProductDetailContent({
 
   return (
     <section className="flex flex-col gap-12 bg-white px-5 py-16 sm:px-10 lg:gap-24 lg:px-20 lg:py-24">
-      <ProductBreadcrumb items={breadcrumbItems} />
+      <ProductBreadcrumb
+        items={breadcrumbItems}
+        label={dict.common.breadcrumb}
+      />
 
       <div className="flex flex-col gap-8 lg:flex-row lg:gap-16">
         <div className="lg:flex-1">
@@ -57,7 +69,7 @@ export async function ProductDetailContent({
       {product.description ? (
         <section className="flex flex-col gap-6">
           <h2 className="text-2xl leading-[1.3] font-semibold tracking-[-0.01em] text-neutral-950">
-            Description
+            {dict.product.descriptionHeading}
           </h2>
           <p className="text-base leading-[1.6] text-neutral-600">
             {product.description}
@@ -68,14 +80,14 @@ export async function ProductDetailContent({
       {related.length > 0 ? (
         <section className="flex flex-col gap-8">
           <h2 className="text-2xl leading-[1.3] font-semibold tracking-[-0.01em] text-neutral-950">
-            Related Products
+            {dict.product.relatedHeading}
           </h2>
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((relatedProduct) => (
               <ProductCard
                 key={relatedProduct._id}
                 title={relatedProduct.title}
-                path={relatedProduct.path}
+                path={localizedHref(locale, relatedProduct.path)}
                 imageUrl={relatedProduct.imageUrl}
               />
             ))}

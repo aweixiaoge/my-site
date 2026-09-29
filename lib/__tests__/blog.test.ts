@@ -80,34 +80,34 @@ describe("splitBlogPosts", () => {
 describe("formatPostMeta", () => {
   it("should_join_the_author_and_the_formatted_date_with_a_middle_dot", () => {
     expect(
-      formatPostMeta({ author: "John Layer", createdTime: "2026-09-27" }),
+      formatPostMeta("en", { author: "John Layer", createdTime: "2026-09-27" }),
     ).toBe("John Layer · September 27, 2026");
   });
 
   it("should_return_only_the_date_when_the_author_is_missing", () => {
     expect(
-      formatPostMeta({ author: null, createdTime: "2026-09-27" }),
+      formatPostMeta("en", { author: null, createdTime: "2026-09-27" }),
     ).toBe("September 27, 2026");
   });
 
   it("should_return_only_the_author_when_the_date_is_missing", () => {
-    expect(formatPostMeta({ author: "John Layer", createdTime: null })).toBe(
+    expect(formatPostMeta("en", { author: "John Layer", createdTime: null })).toBe(
       "John Layer",
     );
   });
 
   it("should_return_an_empty_string_when_both_fields_are_missing", () => {
-    expect(formatPostMeta({ author: null, createdTime: null })).toBe("");
+    expect(formatPostMeta("en", { author: null, createdTime: null })).toBe("");
   });
 
   it("should_ignore_an_unparseable_date", () => {
-    expect(formatPostMeta({ author: "John Layer", createdTime: "n/a" })).toBe(
+    expect(formatPostMeta("en", { author: "John Layer", createdTime: "n/a" })).toBe(
       "John Layer",
     );
   });
 
   it("should_ignore_a_date_with_an_out_of_range_day", () => {
-    expect(formatPostMeta({ author: "John Layer", createdTime: "2026-02-30" })).toBe(
+    expect(formatPostMeta("en", { author: "John Layer", createdTime: "2026-02-30" })).toBe(
       "John Layer",
     );
   });
@@ -115,11 +115,11 @@ describe("formatPostMeta", () => {
 
 describe("blogListingHref", () => {
   it("should_link_to_the_plain_blog_route_for_the_first_page", () => {
-    expect(blogListingHref(1)).toBe("/blog");
+    expect(blogListingHref("en", 1)).toBe("/en/blog");
   });
 
   it("should_add_the_page_param_for_later_pages", () => {
-    expect(blogListingHref(3)).toBe("/blog?page=3");
+    expect(blogListingHref("en", 3)).toBe("/en/blog?page=3");
   });
 });
 
@@ -216,6 +216,6 @@ describe("indexBlogSlugs", () => {
 
 describe("blogDetailHref", () => {
   it("should_build_the_detail_path_from_the_slug", () => {
-    expect(blogDetailHref("how-we-rebuilt")).toBe("/blog/how-we-rebuilt");
+    expect(blogDetailHref("en", "how-we-rebuilt")).toBe("/en/blog/how-we-rebuilt");
   });
 });

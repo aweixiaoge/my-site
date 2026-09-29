@@ -54,11 +54,17 @@ export function paginate<T>(
   };
 }
 
-export function productListingHref(filters: {
-  category?: string;
-  q?: string;
-  page?: number;
-}): string {
+import { localizedHref } from "@/lib/i18n/localized-href";
+import type { Locale } from "@/lib/i18n/locales";
+
+export function productListingHref(
+  locale: Locale,
+  filters: {
+    category?: string;
+    q?: string;
+    page?: number;
+  },
+): string {
   const params = new URLSearchParams();
 
   if (filters.category) {
@@ -72,5 +78,5 @@ export function productListingHref(filters: {
   }
 
   const query = params.toString();
-  return query ? `/product?${query}` : "/product";
+  return localizedHref(locale, query ? `/product?${query}` : "/product");
 }

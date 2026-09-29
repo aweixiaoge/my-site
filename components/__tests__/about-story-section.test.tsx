@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { AboutStorySection } from "@/components/about-story-section";
+import { en } from "@/lib/i18n/dictionaries/en";
 import { getAboutUs } from "@/sanity/about-us";
 
 jest.mock("@/sanity/about-us", () => ({
@@ -24,7 +25,7 @@ describe("AboutStorySection", () => {
   it("should_render_the_section_heading", async () => {
     mockGetAboutUs.mockResolvedValueOnce(aboutUs);
 
-    render(await AboutStorySection());
+    render(await AboutStorySection({ dict: en }));
 
     expect(
       screen.getByRole("heading", { level: 2, name: "Our Story" }),
@@ -34,7 +35,7 @@ describe("AboutStorySection", () => {
   it("should_render_the_story_description_from_sanity", async () => {
     mockGetAboutUs.mockResolvedValueOnce(aboutUs);
 
-    render(await AboutStorySection());
+    render(await AboutStorySection({ dict: en }));
 
     expect(screen.getByText(aboutUs.storyDescription)).toBeInTheDocument();
   });
@@ -42,7 +43,7 @@ describe("AboutStorySection", () => {
   it("should_render_the_first_image_from_sanity", async () => {
     mockGetAboutUs.mockResolvedValueOnce(aboutUs);
 
-    render(await AboutStorySection());
+    render(await AboutStorySection({ dict: en }));
 
     expect(screen.getByRole("img")).toHaveAttribute("src", aboutUs.images[0]);
   });
@@ -50,7 +51,7 @@ describe("AboutStorySection", () => {
   it("should_not_render_the_remaining_images", async () => {
     mockGetAboutUs.mockResolvedValueOnce(aboutUs);
 
-    const { container } = render(await AboutStorySection());
+    const { container } = render(await AboutStorySection({ dict: en }));
 
     expect(container.querySelectorAll("img")).toHaveLength(1);
   });
@@ -58,7 +59,7 @@ describe("AboutStorySection", () => {
   it("should_render_an_empty_image_slot_when_the_document_has_no_images", async () => {
     mockGetAboutUs.mockResolvedValueOnce({ ...aboutUs, images: [] });
 
-    render(await AboutStorySection());
+    render(await AboutStorySection({ dict: en }));
 
     expect(screen.queryByRole("img")).not.toBeInTheDocument();
     expect(
@@ -69,7 +70,7 @@ describe("AboutStorySection", () => {
   it("should_render_nothing_when_no_document_exists", async () => {
     mockGetAboutUs.mockResolvedValueOnce(null);
 
-    const { container } = render(await AboutStorySection());
+    const { container } = render(await AboutStorySection({ dict: en }));
 
     expect(container).toBeEmptyDOMElement();
   });

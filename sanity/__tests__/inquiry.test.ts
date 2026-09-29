@@ -74,8 +74,8 @@ describe("createInquiry", () => {
 
     const result = await createInquiry(inquiry);
 
-    expect(result).toHaveProperty("error");
-    expect((result as { error: string }).error).not.toContain(
+    expect(result).toHaveProperty("code");
+    expect((result as { code: string }).code).not.toContain(
       "Insufficient permissions",
     );
   });

@@ -94,4 +94,9 @@ export type InquiryInput = {
   message: string;
 };
 
-export type InquiryResult = { ok: true } | { ok: false; error: string };
+/** Failure reasons as codes; the client renders them in the active language. */
+export type InquirySubmitError = "invalid" | "write-failed";
+
+export type InquiryResult =
+  | { ok: true }
+  | { ok: false; code: InquirySubmitError };

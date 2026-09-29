@@ -1,9 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { ContactHeroSection } from "@/components/contact-hero-section";
+import { en } from "@/lib/i18n/dictionaries/en";
 
 describe("ContactHeroSection", () => {
   it("should_render_the_contact_page_heading", () => {
-    render(<ContactHeroSection />);
+    render(<ContactHeroSection dict={en} />);
 
     expect(
       screen.getByRole("heading", { level: 1, name: "Contact Us" }),
@@ -11,7 +12,7 @@ describe("ContactHeroSection", () => {
   });
 
   it("should_render_the_intro_copy_from_the_design", () => {
-    render(<ContactHeroSection />);
+    render(<ContactHeroSection dict={en} />);
 
     expect(
       screen.getByText(

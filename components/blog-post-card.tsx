@@ -2,10 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { PostBadge } from "@/components/post-badge";
 import { formatPostMeta } from "@/lib/blog";
+import type { Locale } from "@/lib/i18n/locales";
 import type { BlogPost } from "@/sanity/types";
 
-export function BlogPostCard({ post, href }: { post: BlogPost; href: string }) {
-  const meta = formatPostMeta(post);
+export function BlogPostCard({
+  post,
+  href,
+  locale,
+}: {
+  post: BlogPost;
+  href: string;
+  locale: Locale;
+}) {
+  const meta = formatPostMeta(locale, post);
 
   return (
     <Link
