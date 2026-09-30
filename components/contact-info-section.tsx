@@ -9,6 +9,7 @@ import {
   IconYoutube,
 } from "@/components/contact-icons";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/locales";
 import { getContactInfo } from "@/sanity/contact-info";
 import type { ContactInfo } from "@/sanity/types";
 
@@ -87,8 +88,14 @@ function buildSocialLinks(
   return links;
 }
 
-export async function ContactInfoSection({ dict }: { dict: Dictionary }) {
-  const contactInfo = await getContactInfo();
+export async function ContactInfoSection({
+  locale,
+  dict,
+}: {
+  locale: Locale;
+  dict: Dictionary;
+}) {
+  const contactInfo = await getContactInfo(locale);
 
   if (!contactInfo) {
     return null;

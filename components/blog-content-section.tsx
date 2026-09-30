@@ -23,7 +23,7 @@ export async function BlogContentSection({
   dict: Dictionary;
   page: number;
 }) {
-  const posts = await getBlogPosts();
+  const posts = await getBlogPosts(locale);
   const { featured, rest } = splitBlogPosts(posts);
   const { items, page: currentPage, totalPages } = paginate(
     rest,

@@ -23,8 +23,8 @@ export async function ProductContentSection({
   filters: ProductListingFilters;
 }) {
   const [products, categories] = await Promise.all([
-    getProducts(),
-    getProductCategories(),
+    getProducts(locale),
+    getProductCategories(locale),
   ]);
 
   const matching = filterProducts(products, filters);

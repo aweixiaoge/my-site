@@ -1,4 +1,5 @@
-import { client } from "@/sanity/client";
+import type { Locale } from "@/lib/i18n/locales";
+import { fetchInLocale } from "@/sanity/localized";
 import {
   PRODUCT_BY_PATH_QUERY,
   PRODUCT_CATEGORIES_QUERY,
@@ -11,69 +12,49 @@ type ProductDetailDocument = Omit<ProductDetail, "images"> & {
   images?: (string | null)[] | null;
 };
 
-export async function getProducts(): Promise<Product[]> {
-  try {
-    return await client.fetch<Product[]>(
-      PRODUCTS_QUERY,
-      {},
-      { next: { revalidate: 30 } },
-    );
-  } catch {
-    return [];
-  }
+export async function getProducts(locale: Locale): Promise<Product[]> {
+  return (await fetchInLocale<Product[]>(PRODUCTS_QUERY, locale)) ?? [];
 }
 
-export async function getProductCategories(): Promise<ProductCategory[]> {
-  try {
-    return await client.fetch<ProductCategory[]>(
-      PRODUCT_CATEGORIES_QUERY,
-      {},
-      { next: { revalidate: 30 } },
-    );
-  } catch {
-    return [];
-  }
+export async function getProductCategories(
+  locale: Locale,
+): Promise<ProductCategory[]> {
+  return (
+    (await fetchInLocale<ProductCategory[]>(PRODUCT_CATEGORIES_QUERY, locale)) ??
+    []
+  );
 }
 
 export async function getProductByPath(
   path: string,
+  locale: Locale,
 ): Promise<ProductDetail | null> {
-  try {
-    const product = await client.fetch<ProductDetailDocument | null>(
-      PRODUCT_BY_PATH_QUERY,
-      { path },
-      { next: { revalidate: 30 } },
-    );
+  const product = await fetchInLocale<ProductDetailDocument>(
+    PRODUCT_BY_PATH_QUERY,
+    locale,
+    { path },
+  );
 
-    if (!product) {
-      return null;
-    }
-
-    return {
-      ...product,
-      images: (product.images ?? []).filter(
-        (image): image is string => Boolean(image),
-      ),
-    };
-  } catch {
+  if (!product) {
     return null;
   }
+
+  return {
+    ...product,
+    images: (product.images ?? []).filter(
+      (image): image is string => Boolean(image),
+    ),
+  };
 }
 
-export async function getRelatedProducts({
-  categoryId,
-  excludeId,
-}: {
-  categoryId: string;
-  excludeId: string;
-}): Promise<Product[]> {
-  try {
-    return await client.fetch<Product[]>(
-      RELATED_PRODUCTS_QUERY,
-      { categoryId, excludeId },
-      { next: { revalidate: 30 } },
-    );
-  } catch {
-    return [];
-  }
+export async function getRelatedProducts(
+  { categoryId, excludeId }: { categoryId: string; excludeId: string },
+  locale: Locale,
+): Promise<Product[]> {
+  return (
+    (await fetchInLocale<Product[]>(RELATED_PRODUCTS_QUERY, locale, {
+      categoryId,
+      excludeId,
+    })) ?? []
+  );
 }

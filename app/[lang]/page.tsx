@@ -26,7 +26,7 @@ export default async function IndexPage({ params }: PageProps<"/[lang]">) {
     <main className="flex-1">
       <HeroSection locale={locale} dict={dict} />
       <HotProductsSection locale={locale} dict={dict} />
-      <ContentMediaSection dict={dict} />
+      <ContentMediaSection locale={locale} dict={dict} />
       <ContentStatsSection dict={dict} />
     </main>
   );

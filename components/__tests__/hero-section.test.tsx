@@ -21,6 +21,14 @@ describe("HeroSection", () => {
     jest.clearAllMocks();
   });
 
+  it("should_fetch_the_hero_for_the_active_locale", async () => {
+    mockGetHero.mockResolvedValueOnce(hero);
+
+    await HeroSection({ locale: "es", dict: en });
+
+    expect(mockGetHero).toHaveBeenCalledWith("es");
+  });
+
   it("should_render_the_title_and_description_from_sanity", async () => {
     mockGetHero.mockResolvedValueOnce(hero);
 

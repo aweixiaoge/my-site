@@ -37,23 +37,48 @@ describe("getBlogPosts", () => {
   it("should_return_the_blog_list_documents", async () => {
     mockFetch.mockResolvedValueOnce(posts);
 
-    const result = await getBlogPosts();
+    const result = await getBlogPosts("en");
 
     expect(result).toEqual(posts);
   });
 
-  it("should_query_sanity_with_the_blog_posts_query", async () => {
+  it("should_query_sanity_with_the_requested_language", async () => {
     mockFetch.mockResolvedValueOnce(posts);
 
-    await getBlogPosts();
+    await getBlogPosts("en");
 
-    expect(mockFetch).toHaveBeenCalledWith(BLOG_POSTS_QUERY, {}, expect.anything());
+    expect(mockFetch).toHaveBeenCalledWith(
+      BLOG_POSTS_QUERY,
+      { language: "en" },
+      expect.anything(),
+    );
+  });
+
+  it("should_not_query_english_when_the_requested_language_has_posts", async () => {
+    mockFetch.mockResolvedValueOnce(posts);
+
+    await getBlogPosts("es");
+
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+  });
+
+  it("should_fall_back_to_english_when_the_language_has_no_posts", async () => {
+    mockFetch.mockResolvedValueOnce([]).mockResolvedValueOnce(posts);
+
+    const result = await getBlogPosts("es");
+
+    expect(result).toEqual(posts);
+    expect(mockFetch).toHaveBeenLastCalledWith(
+      BLOG_POSTS_QUERY,
+      { language: "en" },
+      expect.anything(),
+    );
   });
 
   it("should_return_an_empty_array_when_no_blog_posts_exist", async () => {
     mockFetch.mockResolvedValueOnce([]);
 
-    const result = await getBlogPosts();
+    const result = await getBlogPosts("en");
 
     expect(result).toEqual([]);
   });
@@ -61,7 +86,7 @@ describe("getBlogPosts", () => {
   it("should_return_an_empty_array_when_the_sanity_request_fails", async () => {
     mockFetch.mockRejectedValue(new Error("Sanity request failed"));
 
-    const result = await getBlogPosts();
+    const result = await getBlogPosts("en");
 
     expect(result).toEqual([]);
   });
@@ -94,15 +119,44 @@ describe("getBlogPostBySlug", () => {
   it("should_return_the_post_whose_title_slugifies_to_the_slug", async () => {
     mockFetch.mockResolvedValueOnce(posts).mockResolvedValueOnce(detail);
 
-    const result = await getBlogPostBySlug("this-is-my-first-blog");
+    const result = await getBlogPostBySlug("this-is-my-first-blog", "en");
 
     expect(result).toEqual(detail);
+  });
+
+  it("should_query_sanity_with_the_requested_language", async () => {
+    mockFetch.mockResolvedValueOnce(posts).mockResolvedValueOnce(detail);
+
+    await getBlogPostBySlug("this-is-my-first-blog", "en");
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      BLOG_POSTS_QUERY,
+      { language: "en" },
+      expect.anything(),
+    );
+  });
+
+  it("should_fall_back_to_the_english_post_list_when_the_language_has_no_posts", async () => {
+    mockFetch
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce(posts)
+      .mockResolvedValueOnce(detail);
+
+    const result = await getBlogPostBySlug("this-is-my-first-blog", "es");
+
+    expect(result).toEqual(detail);
+    expect(mockFetch).toHaveBeenNthCalledWith(
+      2,
+      BLOG_POSTS_QUERY,
+      { language: "en" },
+      expect.anything(),
+    );
   });
 
   it("should_fetch_the_matched_document_by_id", async () => {
     mockFetch.mockResolvedValueOnce(posts).mockResolvedValueOnce(detail);
 
-    await getBlogPostBySlug("this-is-my-first-blog");
+    await getBlogPostBySlug("this-is-my-first-blog", "en");
 
     expect(mockFetch).toHaveBeenLastCalledWith(
       BLOG_POST_BY_ID_QUERY,
@@ -126,7 +180,7 @@ describe("getBlogPostBySlug", () => {
     ];
     mockFetch.mockResolvedValueOnce(colliding).mockResolvedValueOnce(detail);
 
-    await getBlogPostBySlug("same-title-5a91e251");
+    await getBlogPostBySlug("same-title-5a91e251", "en");
 
     expect(mockFetch).toHaveBeenLastCalledWith(
       BLOG_POST_BY_ID_QUERY,
@@ -143,7 +197,7 @@ describe("getBlogPostBySlug", () => {
         images: [null, "https://example.com/blog-1b.png"],
       });
 
-    const result = await getBlogPostBySlug("this-is-my-first-blog");
+    const result = await getBlogPostBySlug("this-is-my-first-blog", "en");
 
     expect(result?.images).toEqual(["https://example.com/blog-1b.png"]);
   });
@@ -151,7 +205,7 @@ describe("getBlogPostBySlug", () => {
   it("should_return_null_when_no_post_matches_the_slug", async () => {
     mockFetch.mockResolvedValueOnce(posts);
 
-    const result = await getBlogPostBySlug("not-a-real-post");
+    const result = await getBlogPostBySlug("not-a-real-post", "en");
 
     expect(result).toBeNull();
     expect(mockFetch).toHaveBeenCalledTimes(1);
@@ -160,7 +214,7 @@ describe("getBlogPostBySlug", () => {
   it("should_return_null_when_the_matched_document_is_gone", async () => {
     mockFetch.mockResolvedValueOnce(posts).mockResolvedValueOnce(null);
 
-    const result = await getBlogPostBySlug("this-is-my-first-blog");
+    const result = await getBlogPostBySlug("this-is-my-first-blog", "en");
 
     expect(result).toBeNull();
   });
@@ -168,7 +222,7 @@ describe("getBlogPostBySlug", () => {
   it("should_return_null_when_the_sanity_request_fails", async () => {
     mockFetch.mockRejectedValue(new Error("Sanity request failed"));
 
-    const result = await getBlogPostBySlug("this-is-my-first-blog");
+    const result = await getBlogPostBySlug("this-is-my-first-blog", "en");
 
     expect(result).toBeNull();
   });

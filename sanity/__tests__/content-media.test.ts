@@ -22,19 +22,40 @@ describe("getContentMedia", () => {
   it("should_return_the_content_media_document", async () => {
     mockFetch.mockResolvedValueOnce(contentMedia);
 
-    const result = await getContentMedia();
+    const result = await getContentMedia("en");
 
     expect(result).toEqual(contentMedia);
   });
 
-  it("should_query_sanity_with_the_content_media_query", async () => {
+  it("should_query_sanity_with_the_requested_language", async () => {
     mockFetch.mockResolvedValueOnce(contentMedia);
 
-    await getContentMedia();
+    await getContentMedia("en");
 
     expect(mockFetch).toHaveBeenCalledWith(
       CONTENT_MEDIA_QUERY,
-      {},
+      { language: "en" },
+      expect.anything(),
+    );
+  });
+
+  it("should_not_query_english_when_the_requested_language_has_a_document", async () => {
+    mockFetch.mockResolvedValueOnce(contentMedia);
+
+    await getContentMedia("ja");
+
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+  });
+
+  it("should_fall_back_to_english_when_the_language_has_no_document", async () => {
+    mockFetch.mockResolvedValueOnce(null).mockResolvedValueOnce(contentMedia);
+
+    const result = await getContentMedia("ja");
+
+    expect(result).toEqual(contentMedia);
+    expect(mockFetch).toHaveBeenLastCalledWith(
+      CONTENT_MEDIA_QUERY,
+      { language: "en" },
       expect.anything(),
     );
   });
@@ -42,7 +63,7 @@ describe("getContentMedia", () => {
   it("should_return_null_when_no_document_exists", async () => {
     mockFetch.mockResolvedValueOnce(null);
 
-    const result = await getContentMedia();
+    const result = await getContentMedia("en");
 
     expect(result).toBeNull();
   });
@@ -50,7 +71,7 @@ describe("getContentMedia", () => {
   it("should_return_null_when_the_sanity_request_fails", async () => {
     mockFetch.mockRejectedValue(new Error("Sanity request failed"));
 
-    const result = await getContentMedia();
+    const result = await getContentMedia("en");
 
     expect(result).toBeNull();
   });

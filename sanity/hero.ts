@@ -1,15 +1,8 @@
-import { client } from "@/sanity/client";
+import type { Locale } from "@/lib/i18n/locales";
+import { fetchInLocale } from "@/sanity/localized";
 import { HERO_QUERY } from "@/sanity/queries";
 import type { Hero } from "@/sanity/types";
 
-export async function getHero(): Promise<Hero> {
-  try {
-    return await client.fetch<Hero>(
-      HERO_QUERY,
-      {},
-      { next: { revalidate: 30 } },
-    );
-  } catch {
-    return null;
-  }
+export async function getHero(locale: Locale): Promise<Hero> {
+  return fetchInLocale<Hero>(HERO_QUERY, locale);
 }

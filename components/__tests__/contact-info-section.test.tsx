@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { ContactInfoSection } from "@/components/contact-info-section";
 import { en } from "@/lib/i18n/dictionaries/en";
+import type { Locale } from "@/lib/i18n/locales";
 import { getContactInfo } from "@/sanity/contact-info";
 
 jest.mock("@/sanity/contact-info", () => ({
@@ -19,8 +20,8 @@ const contactInfo = {
   instagram: "https://instagram.com/meridian",
 };
 
-async function renderSection() {
-  return render(await ContactInfoSection({ dict: en }));
+async function renderSection(locale: Locale = "en") {
+  return render(await ContactInfoSection({ locale, dict: en }));
 }
 
 describe("ContactInfoSection", () => {
@@ -115,6 +116,12 @@ describe("ContactInfoSection", () => {
     expect(
       screen.queryByRole("link", { name: "Instagram" }),
     ).not.toBeInTheDocument();
+  });
+
+  it("should_fetch_the_document_for_the_active_locale", async () => {
+    await renderSection("es");
+
+    expect(mockGetContactInfo).toHaveBeenCalledWith("es");
   });
 
   it("should_render_nothing_when_no_contact_info_document_exists", async () => {

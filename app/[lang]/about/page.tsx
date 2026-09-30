@@ -26,7 +26,7 @@ export default async function AboutPage({ params }: PageProps<"/[lang]/about">) 
     <main className="flex-1">
       <div className="flex flex-col gap-16 bg-white px-5 py-16 sm:px-10 lg:gap-24 lg:px-20 lg:py-24">
         <AboutHeroSection dict={dict} />
-        <AboutStorySection dict={dict} />
+        <AboutStorySection locale={locale} dict={dict} />
         <AboutMissionSection dict={dict} />
         <AboutCtaSection locale={locale} dict={dict} />
       </div>

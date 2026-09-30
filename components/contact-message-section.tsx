@@ -1,8 +1,15 @@
 import { ContactForm } from "@/components/contact-form";
 import { ContactInfoSection } from "@/components/contact-info-section";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/locales";
 
-export function ContactMessageSection({ dict }: { dict: Dictionary }) {
+export function ContactMessageSection({
+  locale,
+  dict,
+}: {
+  locale: Locale;
+  dict: Dictionary;
+}) {
   return (
     <section className="flex flex-col gap-[50px]">
       <h2 className="text-2xl leading-[1.3] font-semibold tracking-[-0.01em] text-neutral-950">
@@ -13,7 +20,7 @@ export function ContactMessageSection({ dict }: { dict: Dictionary }) {
         <div className="lg:max-w-[625px] lg:flex-[625_1_0%]">
           <ContactForm dict={dict} />
         </div>
-        <ContactInfoSection dict={dict} />
+        <ContactInfoSection locale={locale} dict={dict} />
       </div>
     </section>
   );

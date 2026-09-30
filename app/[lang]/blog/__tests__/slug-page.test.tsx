@@ -31,8 +31,8 @@ const post = {
   body: [],
 };
 
-const pageProps = (slug: string) => ({
-  params: Promise.resolve({ lang: "en", slug }),
+const pageProps = (slug: string, lang = "en") => ({
+  params: Promise.resolve({ lang, slug }),
   searchParams: Promise.resolve({}),
 });
 
@@ -51,8 +51,14 @@ describe("BlogDetailPage", () => {
   it("should_fetch_the_post_for_the_route_slug_and_render_its_content", async () => {
     render(await BlogDetailPage(pageProps("how-we-rebuilt")));
 
-    expect(mockGetBlogPostBySlug).toHaveBeenCalledWith("how-we-rebuilt");
+    expect(mockGetBlogPostBySlug).toHaveBeenCalledWith("how-we-rebuilt", "en");
     expect(screen.getByTestId("blog-detail-content")).toBeInTheDocument();
+  });
+
+  it("should_fetch_the_post_for_the_route_language", async () => {
+    render(await BlogDetailPage(pageProps("how-we-rebuilt", "de")));
+
+    expect(mockGetBlogPostBySlug).toHaveBeenCalledWith("how-we-rebuilt", "de");
   });
 
   it("should_show_the_not_found_page_when_the_post_does_not_exist", async () => {

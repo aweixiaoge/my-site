@@ -80,10 +80,13 @@ describe("ProductDetailContent", () => {
   it("should_fetch_and_render_the_related_products_of_the_same_category", async () => {
     render(await ProductDetailContent({ locale: "en", dict: en, product }));
 
-    expect(mockGetRelatedProducts).toHaveBeenCalledWith({
-      categoryId: "cat-phone",
-      excludeId: "product-1",
-    });
+    expect(mockGetRelatedProducts).toHaveBeenCalledWith(
+      {
+        categoryId: "cat-phone",
+        excludeId: "product-1",
+      },
+      "en",
+    );
     expect(
       screen.getByRole("heading", { level: 2, name: "Related Products" }),
     ).toBeInTheDocument();

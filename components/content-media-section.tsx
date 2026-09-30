@@ -1,8 +1,15 @@
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/locales";
 import { getContentMedia } from "@/sanity/content-media";
 
-export async function ContentMediaSection({ dict }: { dict: Dictionary }) {
-  const media = await getContentMedia();
+export async function ContentMediaSection({
+  locale,
+  dict,
+}: {
+  locale: Locale;
+  dict: Dictionary;
+}) {
+  const media = await getContentMedia(locale);
 
   if (!media) {
     return null;

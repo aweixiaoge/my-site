@@ -31,6 +31,14 @@ describe("BlogContentSection", () => {
     jest.clearAllMocks();
   });
 
+  it("should_fetch_the_posts_for_the_active_locale", async () => {
+    mockGetBlogPosts.mockResolvedValueOnce(posts);
+
+    await BlogContentSection({ locale: "ja", dict: en, page: 1 });
+
+    expect(mockGetBlogPosts).toHaveBeenCalledWith("ja");
+  });
+
   it("should_render_the_hero_heading_and_intro", async () => {
     mockGetBlogPosts.mockResolvedValueOnce(posts);
 

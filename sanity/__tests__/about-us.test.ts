@@ -24,17 +24,42 @@ describe("getAboutUs", () => {
   it("should_return_the_about_us_document", async () => {
     mockFetch.mockResolvedValueOnce(aboutUs);
 
-    const result = await getAboutUs();
+    const result = await getAboutUs("en");
 
     expect(result).toEqual(aboutUs);
   });
 
-  it("should_query_sanity_with_the_about_us_query", async () => {
+  it("should_query_sanity_with_the_requested_language", async () => {
     mockFetch.mockResolvedValueOnce(aboutUs);
 
-    await getAboutUs();
+    await getAboutUs("en");
 
-    expect(mockFetch).toHaveBeenCalledWith(ABOUT_US_QUERY, {}, expect.anything());
+    expect(mockFetch).toHaveBeenCalledWith(
+      ABOUT_US_QUERY,
+      { language: "en" },
+      expect.anything(),
+    );
+  });
+
+  it("should_not_query_english_when_the_requested_language_has_a_document", async () => {
+    mockFetch.mockResolvedValueOnce(aboutUs);
+
+    await getAboutUs("de");
+
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+  });
+
+  it("should_fall_back_to_english_when_the_language_has_no_document", async () => {
+    mockFetch.mockResolvedValueOnce(null).mockResolvedValueOnce(aboutUs);
+
+    const result = await getAboutUs("de");
+
+    expect(result).toEqual(aboutUs);
+    expect(mockFetch).toHaveBeenLastCalledWith(
+      ABOUT_US_QUERY,
+      { language: "en" },
+      expect.anything(),
+    );
   });
 
   it("should_return_an_empty_image_list_when_no_images_are_set", async () => {
@@ -43,7 +68,7 @@ describe("getAboutUs", () => {
       images: null,
     });
 
-    const result = await getAboutUs();
+    const result = await getAboutUs("en");
 
     expect(result?.images).toEqual([]);
   });
@@ -54,7 +79,7 @@ describe("getAboutUs", () => {
       images: [aboutUs.images[0], null],
     });
 
-    const result = await getAboutUs();
+    const result = await getAboutUs("en");
 
     expect(result?.images).toEqual([aboutUs.images[0]]);
   });
@@ -62,7 +87,7 @@ describe("getAboutUs", () => {
   it("should_return_null_when_no_document_exists", async () => {
     mockFetch.mockResolvedValueOnce(null);
 
-    const result = await getAboutUs();
+    const result = await getAboutUs("en");
 
     expect(result).toBeNull();
   });
@@ -70,7 +95,7 @@ describe("getAboutUs", () => {
   it("should_return_null_when_the_sanity_request_fails", async () => {
     mockFetch.mockRejectedValue(new Error("Sanity request failed"));
 
-    const result = await getAboutUs();
+    const result = await getAboutUs("en");
 
     expect(result).toBeNull();
   });

@@ -10,7 +10,7 @@ export async function generateMetadata({
 }: PageProps<"/[lang]/blog/[slug]">): Promise<Metadata> {
   const { lang, slug } = await params;
   const dict = dictionaryFor(lang);
-  const post = await getBlogPostBySlug(slug);
+  const post = await getBlogPostBySlug(slug, toLocale(lang));
 
   if (!post) {
     return {
@@ -30,7 +30,7 @@ export default async function BlogDetailPage({
 }: PageProps<"/[lang]/blog/[slug]">) {
   const { lang, slug } = await params;
   const locale = toLocale(lang);
-  const post = await getBlogPostBySlug(slug);
+  const post = await getBlogPostBySlug(slug, locale);
 
   if (!post) {
     notFound();

@@ -37,6 +37,17 @@ describe("ProductContentSection", () => {
     mockGetProductCategories.mockResolvedValue(categories);
   });
 
+  it("should_fetch_the_products_and_categories_for_the_active_locale", async () => {
+    await ProductContentSection({
+      locale: "es",
+      dict: en,
+      filters: noFilters,
+    });
+
+    expect(mockGetProducts).toHaveBeenCalledWith("es");
+    expect(mockGetProductCategories).toHaveBeenCalledWith("es");
+  });
+
   it("should_render_the_page_heading", async () => {
     render(await ProductContentSection({ locale: "en", dict: en, filters: noFilters }));
 

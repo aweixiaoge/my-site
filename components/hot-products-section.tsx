@@ -11,7 +11,7 @@ export async function HotProductsSection({
   locale: Locale;
   dict: Dictionary;
 }) {
-  const products = await getHotProducts();
+  const products = await getHotProducts(locale);
 
   if (products.length === 0) {
     return null;

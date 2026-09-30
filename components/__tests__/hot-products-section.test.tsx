@@ -21,6 +21,14 @@ describe("HotProductsSection", () => {
     jest.clearAllMocks();
   });
 
+  it("should_fetch_the_products_for_the_active_locale", async () => {
+    mockGetHotProducts.mockResolvedValueOnce(products);
+
+    await HotProductsSection({ locale: "de", dict: en });
+
+    expect(mockGetHotProducts).toHaveBeenCalledWith("de");
+  });
+
   it("should_render_the_section_heading", async () => {
     mockGetHotProducts.mockResolvedValueOnce(products);
 

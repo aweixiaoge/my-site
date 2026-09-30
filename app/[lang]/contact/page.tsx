@@ -26,7 +26,7 @@ export default async function ContactPage({
     <main className="flex-1">
       <div className="flex flex-col gap-16 bg-white px-5 py-16 sm:px-10 lg:gap-24 lg:px-20 lg:py-24">
         <ContactHeroSection dict={dict} />
-        <ContactMessageSection dict={dict} />
+        <ContactMessageSection locale={locale} dict={dict} />
       </div>
     </main>
   );

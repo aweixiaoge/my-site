@@ -24,7 +24,7 @@ describe("ContentMediaSection", () => {
   it("should_render_the_section_heading", async () => {
     mockGetContentMedia.mockResolvedValueOnce(contentMedia);
 
-    render(await ContentMediaSection({ dict: en }));
+    render(await ContentMediaSection({ locale: "en", dict: en }));
 
     expect(
       screen.getByRole("heading", {
@@ -37,7 +37,7 @@ describe("ContentMediaSection", () => {
   it("should_render_the_section_description", async () => {
     mockGetContentMedia.mockResolvedValueOnce(contentMedia);
 
-    render(await ContentMediaSection({ dict: en }));
+    render(await ContentMediaSection({ locale: "en", dict: en }));
 
     expect(
       screen.getByText(
@@ -49,7 +49,7 @@ describe("ContentMediaSection", () => {
   it("should_render_the_title_from_sanity", async () => {
     mockGetContentMedia.mockResolvedValueOnce(contentMedia);
 
-    render(await ContentMediaSection({ dict: en }));
+    render(await ContentMediaSection({ locale: "en", dict: en }));
 
     expect(
       screen.getByRole("heading", { level: 3, name: contentMedia.title }),
@@ -59,7 +59,7 @@ describe("ContentMediaSection", () => {
   it("should_render_the_description_from_sanity", async () => {
     mockGetContentMedia.mockResolvedValueOnce(contentMedia);
 
-    render(await ContentMediaSection({ dict: en }));
+    render(await ContentMediaSection({ locale: "en", dict: en }));
 
     expect(screen.getByText(contentMedia.description)).toBeInTheDocument();
   });
@@ -67,7 +67,7 @@ describe("ContentMediaSection", () => {
   it("should_render_the_video_from_sanity", async () => {
     mockGetContentMedia.mockResolvedValueOnce(contentMedia);
 
-    const { container } = render(await ContentMediaSection({ dict: en }));
+    const { container } = render(await ContentMediaSection({ locale: "en", dict: en }));
 
     expect(container.querySelector("video")).toHaveAttribute(
       "src",
@@ -81,7 +81,7 @@ describe("ContentMediaSection", () => {
       videoUrl: null,
     });
 
-    const { container } = render(await ContentMediaSection({ dict: en }));
+    const { container } = render(await ContentMediaSection({ locale: "en", dict: en }));
 
     expect(
       screen.getByRole("heading", { level: 3, name: contentMedia.title }),
@@ -89,10 +89,18 @@ describe("ContentMediaSection", () => {
     expect(container.querySelector("video")).not.toBeInTheDocument();
   });
 
+  it("should_fetch_the_document_for_the_active_locale", async () => {
+    mockGetContentMedia.mockResolvedValueOnce(contentMedia);
+
+    await ContentMediaSection({ locale: "ja", dict: en });
+
+    expect(mockGetContentMedia).toHaveBeenCalledWith("ja");
+  });
+
   it("should_render_nothing_when_no_document_exists", async () => {
     mockGetContentMedia.mockResolvedValueOnce(null);
 
-    const { container } = render(await ContentMediaSection({ dict: en }));
+    const { container } = render(await ContentMediaSection({ locale: "en", dict: en }));
 
     expect(container).toBeEmptyDOMElement();
   });

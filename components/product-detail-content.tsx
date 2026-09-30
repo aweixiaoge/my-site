@@ -21,10 +21,13 @@ export async function ProductDetailContent({
   dict: Dictionary;
 }) {
   const related = product.category
-    ? await getRelatedProducts({
-        categoryId: product.category._id,
-        excludeId: product._id,
-      })
+    ? await getRelatedProducts(
+        {
+          categoryId: product.category._id,
+          excludeId: product._id,
+        },
+        locale,
+      )
     : [];
 
   const breadcrumbItems: BreadcrumbItem[] = [

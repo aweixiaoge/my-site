@@ -1,9 +1,16 @@
 import Image from "next/image";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/locales";
 import { getAboutUs } from "@/sanity/about-us";
 
-export async function AboutStorySection({ dict }: { dict: Dictionary }) {
-  const aboutUs = await getAboutUs();
+export async function AboutStorySection({
+  locale,
+  dict,
+}: {
+  locale: Locale;
+  dict: Dictionary;
+}) {
+  const aboutUs = await getAboutUs(locale);
 
   if (!aboutUs) {
     return null;

@@ -31,8 +31,8 @@ const product = {
   category: { _id: "cat-phone", title: "Smartphone" },
 };
 
-const pageProps = (slug: string[]) => ({
-  params: Promise.resolve({ lang: "en", slug }),
+const pageProps = (slug: string[], lang = "en") => ({
+  params: Promise.resolve({ lang, slug }),
   searchParams: Promise.resolve({}),
 });
 
@@ -45,8 +45,20 @@ describe("ProductDetailPage", () => {
   it("should_fetch_the_product_for_the_route_path_and_render_its_content", async () => {
     render(await ProductDetailPage(pageProps(["smartphone", "10"])));
 
-    expect(mockGetProductByPath).toHaveBeenCalledWith("/product/smartphone/10");
+    expect(mockGetProductByPath).toHaveBeenCalledWith(
+      "/product/smartphone/10",
+      "en",
+    );
     expect(screen.getByTestId("product-detail-content")).toBeInTheDocument();
+  });
+
+  it("should_fetch_the_product_for_the_route_language", async () => {
+    render(await ProductDetailPage(pageProps(["smartphone", "10"], "ja")));
+
+    expect(mockGetProductByPath).toHaveBeenCalledWith(
+      "/product/smartphone/10",
+      "ja",
+    );
   });
 
   it("should_render_product_json_ld_built_from_the_sanity_data", async () => {

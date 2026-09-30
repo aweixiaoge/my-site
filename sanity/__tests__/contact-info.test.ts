@@ -26,19 +26,40 @@ describe("getContactInfo", () => {
   it("should_return_the_contact_info_document", async () => {
     mockFetch.mockResolvedValueOnce(contactInfo);
 
-    const result = await getContactInfo();
+    const result = await getContactInfo("en");
 
     expect(result).toEqual(contactInfo);
   });
 
-  it("should_query_sanity_with_the_contact_info_query", async () => {
+  it("should_query_sanity_with_the_requested_language", async () => {
     mockFetch.mockResolvedValueOnce(contactInfo);
 
-    await getContactInfo();
+    await getContactInfo("en");
 
     expect(mockFetch).toHaveBeenCalledWith(
       CONTACT_INFO_QUERY,
-      {},
+      { language: "en" },
+      expect.anything(),
+    );
+  });
+
+  it("should_not_query_english_when_the_requested_language_has_a_document", async () => {
+    mockFetch.mockResolvedValueOnce(contactInfo);
+
+    await getContactInfo("es");
+
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+  });
+
+  it("should_fall_back_to_english_when_the_language_has_no_document", async () => {
+    mockFetch.mockResolvedValueOnce(null).mockResolvedValueOnce(contactInfo);
+
+    const result = await getContactInfo("es");
+
+    expect(result).toEqual(contactInfo);
+    expect(mockFetch).toHaveBeenLastCalledWith(
+      CONTACT_INFO_QUERY,
+      { language: "en" },
       expect.anything(),
     );
   });
@@ -46,7 +67,7 @@ describe("getContactInfo", () => {
   it("should_return_null_when_no_document_exists", async () => {
     mockFetch.mockResolvedValueOnce(null);
 
-    const result = await getContactInfo();
+    const result = await getContactInfo("en");
 
     expect(result).toBeNull();
   });
@@ -54,7 +75,7 @@ describe("getContactInfo", () => {
   it("should_return_null_when_the_sanity_request_fails", async () => {
     mockFetch.mockRejectedValue(new Error("Sanity request failed"));
 
-    const result = await getContactInfo();
+    const result = await getContactInfo("en");
 
     expect(result).toBeNull();
   });

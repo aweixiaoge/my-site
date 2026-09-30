@@ -13,7 +13,7 @@ export async function HeroSection({
   locale: Locale;
   dict: Dictionary;
 }) {
-  const hero = (await getHero()) ?? {
+  const hero = (await getHero(locale)) ?? {
     title: dict.home.heroTitle,
     description: dict.home.heroDescription,
     path: "/product",

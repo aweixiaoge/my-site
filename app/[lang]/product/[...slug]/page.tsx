@@ -11,7 +11,7 @@ export async function generateMetadata({
 }: PageProps<"/[lang]/product/[...slug]">): Promise<Metadata> {
   const { lang, slug } = await params;
   const dict = dictionaryFor(lang);
-  const product = await getProductByPath(productDetailPath(slug));
+  const product = await getProductByPath(productDetailPath(slug), toLocale(lang));
 
   if (!product) {
     return {
@@ -31,7 +31,7 @@ export default async function ProductDetailPage({
 }: PageProps<"/[lang]/product/[...slug]">) {
   const { lang, slug } = await params;
   const locale = toLocale(lang);
-  const product = await getProductByPath(productDetailPath(slug));
+  const product = await getProductByPath(productDetailPath(slug), locale);
 
   if (!product) {
     notFound();
