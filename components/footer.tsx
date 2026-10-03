@@ -16,15 +16,15 @@ export function Footer({
       links: [
         {
           label: dict.footer.earbud,
-          href: localizedHref(locale, "/product/earbud"),
+          href: localizedHref(locale, "/product?category=31ef3f8e-8e36-4ad4-8b0f-018bd1043165"),
         },
         {
           label: dict.footer.smartphone,
-          href: localizedHref(locale, "/product/smartphone"),
+          href: localizedHref(locale, "/product?category=4605470e-6aad-4609-8edc-38c57900aab2"),
         },
         {
           label: dict.footer.headphone,
-          href: localizedHref(locale, "/product/headphone"),
+          href: localizedHref(locale, "/product?category=1457ab35-94f7-494e-9075-c16345246e63"),
         },
       ],
     },
